@@ -1,0 +1,15 @@
+{
+  "short_name": "Kanata Production",
+  "name": "Kanata Production",
+  "icons": [
+    {
+      "src": "kpLogo.png",
+      "type": "image/png",
+      "sizes": "129x129"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

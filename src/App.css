@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Oswald', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  object-fit: cover;
+}
+
+.imagebox {
+  width: 100%;
+  height: 100%;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.imagebox:hover {
+  box-shadow: inset 0 0 0 100vw rgba(222, 37, 72, 0.8);
+}
+
+.imagebox h1,
+h4 {
+  visibility: hidden;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
+
+.imagebox:hover h1 {
+  font-size: 20px;
+  visibility: visible;
+  font-weight: 400;
+  align-self: flex-start;
+}
+
+.imagebox:hover h4 {
+  font-weight: 400;
+  font-size: 14px;
+  align-self: flex-start;
+  visibility: visible;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* 720 / 1280 = 0.5625 */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.red-bgcolor {
+  background: #de2548;
+}
+
+.containerXs {
+  padding: 2%;
+}
+
+.mediaRootXsThumbnail {
+  margin-bottom: 3%;
+}
