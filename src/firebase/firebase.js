@@ -4,14 +4,14 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyDGzbmuSjF9kIwh1YVe93KA2mdNZfYaXqk',
-  authDomain: 'kanata-production.firebaseapp.com',
-  databaseURL: 'https://kanata-production.firebaseio.com',
-  projectId: 'kanata-production',
-  storageBucket: 'kanata-production.appspot.com',
-  messagingSenderId: '991649640183',
-  appId: '1:991649640183:web:ea404333a1acd4e100edf2',
-  measurementId: 'G-K1QFNEWD7B',
+  apiKey: 'AIzaSyCjG4fqorKT3uxwOknceTlpTE329WCfxkk',
+  authDomain: 'alaska-media.firebaseapp.com',
+  databaseURL: 'https://alaska-media.firebaseio.com',
+  projectId: 'alaska-media',
+  storageBucket: 'alaska-media.appspot.com',
+  messagingSenderId: '528347917892',
+  appId: '1:528347917892:web:a30d674e96a8ac1e3c5611',
+  measurementId: 'G-3S0S7L7K0Z',
 };
 
 firebase.initializeApp(firebaseConfig);

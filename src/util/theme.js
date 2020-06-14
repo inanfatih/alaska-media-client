@@ -7,7 +7,7 @@ export const theme = createMuiTheme({
   palette: {
     primary: {
       light: '#33c9dc',
-      main: '#000',
+      main: '#202123',
       dark: '#008394',
       contrastText: '#fff',
     },
@@ -47,6 +47,7 @@ export const styles = (theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    background: '#202123',
   },
   content: {
     minHeight: '100vh',
@@ -71,9 +72,13 @@ export const styles = (theme) => ({
   },
   logoSmUp: {
     objectFit: 'contain',
-    paddingBottom: 20,
-    paddingTop: 75,
-    backgroundColor: 'black',
+
+    paddingTop: 25,
+    backgroundColor: '#202123',
+
+    width: drawerWidth * 0.5,
+    height: drawerWidth * 0.7,
+    margin: 'auto',
   },
   nested: {
     paddingLeft: theme.spacing(7),
@@ -87,7 +92,7 @@ export const styles = (theme) => ({
   companyNameXs: {
     padding: '10px',
     textAlign: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#202123',
     color: 'white',
     fontSize: '2em',
     margin: 'auto',
@@ -96,7 +101,7 @@ export const styles = (theme) => ({
     padding: '10px',
     paddingBottom: '10px',
     textAlign: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#202123',
     color: 'white',
     fontSize: '2.6em',
   },
@@ -129,7 +134,7 @@ export const styles = (theme) => ({
       padding: '2%',
     },
     background: 'white',
-    color: 'black',
+    color: '#202123',
   },
 
   cardMedia: {
@@ -164,7 +169,7 @@ export const styles = (theme) => ({
       padding: '5%',
     },
     background: 'white',
-    color: 'black',
+    color: '#202123',
   },
 
   contactForm: {

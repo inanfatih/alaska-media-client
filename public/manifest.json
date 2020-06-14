@@ -1,6 +1,6 @@
 {
-  "short_name": "Kanata Production",
-  "name": "Kanata Production",
+  "short_name": "Alaska Media",
+  "name": "Alaska Media",
   "icons": [
     {
       "src": "kpLogo.png",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#202123",
   "background_color": "#ffffff"
 }

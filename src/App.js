@@ -23,7 +23,7 @@ import CreateContent from './admin/CreateContent';
 import EditContent from './admin/EditContent';
 
 axios.defaults.baseURL =
-  'https://us-central1-kanata-production.cloudfunctions.net/api';
+  'https://us-central1-alaska-media.cloudfunctions.net/api';
 
 const useStyles = makeStyles(styles);
 

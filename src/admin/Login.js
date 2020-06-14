@@ -51,10 +51,7 @@ class login extends Component {
       .post('/login', userData)
       .then((res) => {
         // console.log(res.data);
-        localStorage.setItem(
-          'KanataProductionToken',
-          `Bearer ${res.data.token}`,
-        );
+        localStorage.setItem('AlaskaMediaToken', `Bearer ${res.data.token}`);
         this.setState({
           loading: false,
         });

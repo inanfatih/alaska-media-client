@@ -52,7 +52,7 @@ function Navigation(props) {
   const drawer = (
     <div
       style={{
-        backgroundColor: 'black',
+        backgroundColor: '#202123',
         color: 'white',
         height: '100vh',
         position: 'relative',
@@ -182,7 +182,7 @@ function Navigation(props) {
             </Link>
             <Link to='/'>
               <Typography className={classes.companyNameXs}>
-                Kanata Production
+                Alaska Media
               </Typography>
             </Link>
           </Toolbar>
@@ -204,11 +204,7 @@ function Navigation(props) {
               keepMounted: true, // Better open performance on mobile.
             }}>
             <img src={logo} alt='logo' className={classes.logoSmUp} />
-            <Link to='/'>
-              <Typography className={classes.companyNameOnDrawer}>
-                Kanata Production
-              </Typography>
-            </Link>
+
             {drawer}
           </Drawer>
         </Hidden>
@@ -221,11 +217,7 @@ function Navigation(props) {
             variant='permanent'
             open>
             <img src={logo} alt='logo' className={classes.logoSmUp} />
-            <Link to='/'>
-              <Typography className={classes.companyNameOnDrawer}>
-                Kanata Production
-              </Typography>
-            </Link>
+
             {drawer}
           </Drawer>
         </Hidden>
