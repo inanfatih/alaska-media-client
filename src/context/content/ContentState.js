@@ -1,33 +1,62 @@
 import React, { useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
 import ContentContext from './contentContext';
 import contentReducer from './contentReducer';
-import { SET_ALERT, REMOVE_ALERT } from '../types';
+import { GET_CONTENT, CONTENT_ERROR, DELETE_CONTENT } from '../types';
+import axios from 'axios';
 
 const ContentState = (props) => {
-  const initialState = [];
+  const initialState = {
+    content: [],
+    loading: true,
+    error: null,
+    current: null,
+    allContentPath: '/content',
+  };
 
   const [state, dispatch] = useReducer(contentReducer, initialState);
 
-  //Set Alert
-  const setAlert = (msg, type, timeout = 5000) => {
-    const id = uuid();
-    dispatch({ type: SET_ALERT, payload: { msg, type, id } });
-
-    setTimeout(
-      () =>
-        dispatch({
-          type: REMOVE_ALERT,
-          payload: id,
-        }),
-      timeout,
-    );
+  const getContent = async (dataPath) => {
+    try {
+      const res = await axios.get(dataPath);
+      console.log('res', res.data);
+      dispatch({
+        type: GET_CONTENT,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CONTENT_ERROR,
+        payload: error.response,
+      });
+    }
   };
+
+  const deleteContent = async (contentId) => {
+    try {
+      const res = await axios.delete(`/content/${contentId}`);
+
+      dispatch({
+        type: DELETE_CONTENT,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CONTENT_ERROR,
+        payload: error.response,
+      });
+    }
+  };
+
   return (
     <ContentContext.Provider
       value={{
-        alerts: state,
-        setAlert,
+        content: state.content,
+        loading: state.loading,
+        error: state.error,
+        current: state.current,
+        allContentPath: state.allContentPath,
+        getContent,
+        deleteContent,
       }}>
       {props.children}
     </ContentContext.Provider>

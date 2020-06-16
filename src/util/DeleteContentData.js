@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const DeleteContentData = async (contentIdReturned) => {
-  return await axios.delete(`/content/${contentIdReturned}`).catch((err) => {
+const DeleteContentData = async (contentId) => {
+  return await axios.delete(`/content/${contentId}`).catch((err) => {
     console.log(err);
   });
 };

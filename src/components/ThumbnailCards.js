@@ -1,8 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Grow from '@material-ui/core/Grow';
@@ -15,6 +14,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import loadingSipnner from '../layout/loadingSpinner';
 
 import { drawerWidth } from '../util/theme';
+import ContentContext from '../context/content/contentContext';
+import useWindowDimensions from '../util/getWindowDimensions';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,64 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const getWindowDimensions = () => {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
-};
+const ThumbnailCards = ({ dataPath }) => {
+  const contentContext = useContext(ContentContext);
 
-function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = React.useState(
-    getWindowDimensions(),
-  );
-
-  React.useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [windowDimensions]);
-
-  return windowDimensions;
-}
-
-const ThumbnailCards = (props) => {
-  const [content, setContent] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const { getContent, loading, content, error } = contentContext;
 
   const { height, width } = useWindowDimensions();
 
-  React.useEffect(
+  useEffect(
     () => {
-      setLoading(true);
-      axios
-        .get(props.dataPath)
-        .then((res) => {
-          console.log(res);
-          console.log(res.data);
-          setContent(res.data);
-        })
-        .then(() => {
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      getContent(dataPath);
     },
-    [props.dataPath],
-    loading,
+    // eslint-disable-next-line
+    [dataPath],
   );
 
   const classes = useStyles();
-  console.log(classes);
-  console.log('width: ', width);
-  console.log('height: ', height);
 
-  let gridWidth = 100;
+  let gridWidth = width;
   if (width >= 1920) {
     gridWidth = (width - drawerWidth) / 6;
   } else if (width >= 1280) {
@@ -90,7 +51,7 @@ const ThumbnailCards = (props) => {
     gridWidth = (width - drawerWidth) / 3;
   } else if (width >= 600) {
     gridWidth = width - drawerWidth;
-  } else gridWidth = width;
+  }
 
   let contentMarkup =
     width >= 960 ? (
