@@ -134,7 +134,7 @@ function Navigation(props) {
 
       <div className={classes.socialMediaIcons}>
         <a
-          href='https://www.vimeo.com'
+          href='https://vimeo.com/user117684606'
           target='_blank'
           rel='noopener noreferrer'>
           <i className='fab fa-vimeo-square fa-2x'></i>

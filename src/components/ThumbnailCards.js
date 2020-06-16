@@ -11,8 +11,8 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
+import loadingSipnner from '../layout/loadingSpinner';
 
 import { drawerWidth } from '../util/theme';
 
@@ -91,22 +91,6 @@ const ThumbnailCards = (props) => {
   } else if (width >= 600) {
     gridWidth = width - drawerWidth;
   } else gridWidth = width;
-
-  let loadingMarkup = (
-    <div
-      style={{
-        width: '30%',
-        height: '100vh',
-        margin: 'auto',
-      }}>
-      <CircularProgress
-        size={200}
-        thickness={1}
-        color={'#fff'}
-        style={{ marginTop: '30vh' }}
-      />
-    </div>
-  );
 
   let contentMarkup =
     width >= 960 ? (
@@ -196,7 +180,7 @@ const ThumbnailCards = (props) => {
         ))}
       </div>
     );
-  return <Fragment>{loading ? loadingMarkup : contentMarkup}</Fragment>;
+  return <Fragment>{loading ? loadingSipnner : contentMarkup}</Fragment>;
 };
 
 export default ThumbnailCards;

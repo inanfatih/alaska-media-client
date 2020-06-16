@@ -72,13 +72,12 @@ export const styles = (theme) => ({
   },
   logoSmUp: {
     objectFit: 'contain',
-
     paddingTop: 25,
     backgroundColor: '#202123',
-
     width: drawerWidth * 0.5,
     height: drawerWidth * 0.7,
     margin: 'auto',
+    display: 'block',
   },
   nested: {
     paddingLeft: theme.spacing(7),

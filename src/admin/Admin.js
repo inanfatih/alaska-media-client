@@ -31,9 +31,9 @@ export default function Admin() {
               src={kpLogo}
               alt='Logo'
               style={{
-                margin: '0 40%',
-                marginTop: '5%',
-                width: '20%',
+                margin: 'auto',
+                display: 'block',
+                width: '60%',
               }}
             />
 

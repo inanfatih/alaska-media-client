@@ -14,8 +14,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+import loadingSipnner from '../layout/loadingSpinner';
 //Pages
 import { styles } from '../util/theme';
 import '../App.css';
@@ -37,22 +36,6 @@ export default function Content(props) {
     [],
   );
   const classes = useStyles();
-
-  let loadingMarkup = (
-    <div
-      style={{
-        width: '30%',
-        height: '100vh',
-        margin: 'auto',
-      }}>
-      <CircularProgress
-        size={200}
-        thickness={1}
-        color={'#fff'}
-        style={{ marginTop: '30vh' }}
-      />
-    </div>
-  );
 
   const contentId = props.match.params.contentId;
 
@@ -202,7 +185,7 @@ export default function Content(props) {
   );
 
   return loading
-    ? loadingMarkup
+    ? loadingSipnner
     : contentPage.type === 3
     ? // Video content
       videoMarkup

@@ -21,6 +21,7 @@ import Admin from './admin/Admin';
 import Login from './admin/Login';
 import CreateContent from './admin/CreateContent';
 import EditContent from './admin/EditContent';
+import ContentState from './context/content/ContentState';
 
 axios.defaults.baseURL =
   'https://us-central1-alaska-media.cloudfunctions.net/api';
@@ -32,24 +33,26 @@ function App() {
 
   return (
     <Scrollbars style={{ height: '100vh' }}>
-      <Router>
-        <Navigation />
-        <main className={classes.content}>
-          <Switch>
-            <Route exact path='/2d3d' component={TwoDThreeD} />
-            <Route exact path='/admin' component={Admin} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/missions-visions' component={MisionVision} />
-            <Route exact path='/videos' component={Videos} />
-            <Route exact path='/social-media' component={SocialMedia} />
-            <Route exact path='/contact' component={Contact} />
-            <Route exact path='/edit-content' component={EditContent} />
-            <Route exact path='/content/:contentId' component={Content} />
-            <Route exact path='/create-content' component={CreateContent} />
-            <Route exact path='/' component={Home} />
-          </Switch>
-        </main>
-      </Router>
+      <ContentState>
+        <Router>
+          <Navigation />
+          <main className={classes.content}>
+            <Switch>
+              <Route exact path='/2d3d' component={TwoDThreeD} />
+              <Route exact path='/admin' component={Admin} />
+              <Route exact path='/login' component={Login} />
+              <Route exact path='/missions-visions' component={MisionVision} />
+              <Route exact path='/videos' component={Videos} />
+              <Route exact path='/social-media' component={SocialMedia} />
+              <Route exact path='/contact' component={Contact} />
+              <Route exact path='/edit-content' component={EditContent} />
+              <Route exact path='/content/:contentId' component={Content} />
+              <Route exact path='/create-content' component={CreateContent} />
+              <Route exact path='/' component={Home} />
+            </Switch>
+          </main>
+        </Router>
+      </ContentState>
     </Scrollbars>
   );
 }
