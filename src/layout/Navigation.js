@@ -134,22 +134,22 @@ function Navigation(props) {
 
       <div className={classes.socialMediaIcons}>
         <a
-          href='https://vimeo.com/user117684606'
+          href='https://www.youtube.com/channel/UCD2hr0gq9pV8aDG1mO5JlAg'
           target='_blank'
           rel='noopener noreferrer'>
-          <i className='fab fa-vimeo-square fa-2x'></i>
+          <i className='fa fa-youtube-play fa-2x'></i>
         </a>
         <a
           href='https://www.behance.com'
           target='_blank'
           rel='noopener noreferrer'>
-          <i className='fab fa-behance-square fa-2x'></i>
+          <i className='fab fa-behance fa-2x'></i>
         </a>
         <a
           href='https://www.facebook.com'
           target='_blank'
           rel='noopener noreferrer'>
-          <i className='fab fa-facebook-square fa-2x'></i>
+          <i className='fab fa-facebook fa-2x'></i>
         </a>
       </div>
       <Link to='/login'>

@@ -35,21 +35,13 @@ export default function TwoDThreeD(props) {
                 }}>
                 <CardContent>
                   <Typography gutterBottom variant='h3'>
-                    Title
+                    Mission
                   </Typography>
+                  <br />
                   <Typography gutterBottom variant='h5'>
-                    Subtitle
-                  </Typography>
-                  <Typography variant='h6' color='textSecondary' component='p'>
-                    Description
-                    <br />
-                    Description
-                    <br />
-                    Description
-                    <br />
-                    Description
-                    <br />
-                    Description
+                    At Alaska Media, we knead our limitless capability in visual
+                    arts with digital media components in order to boost our
+                    clients’ visibility on social media platforms.
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -61,13 +53,13 @@ export default function TwoDThreeD(props) {
                 }}>
                 <CardContent>
                   <Typography gutterBottom variant='h3'>
-                    Title
+                    Vision
                   </Typography>
+                  <br />
                   <Typography gutterBottom variant='h5'>
-                    Subtitle
-                  </Typography>
-                  <Typography variant='h6' color='textSecondary' component='p'>
-                    Description
+                    We are preparing for a smart platform that will allow fully
+                    automated visual content production and headless digital
+                    media marketing.
                   </Typography>
                 </CardContent>
               </CardActionArea>

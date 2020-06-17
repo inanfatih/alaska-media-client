@@ -73,8 +73,6 @@ const CreateContent = () => {
   };
 
   const imageUploader = async (file, uploadType, index, contentIdReturned) => {
-    // let reader = new FileReader();
-    // let file = event.target.files[0];
     let fileName = '';
     let fileExtension = file.name.split('.')[file.name.split('.').length - 1];
     if (uploadType === 'imageList') {
@@ -85,10 +83,10 @@ const CreateContent = () => {
     // Create a root reference
 
     var storageRef = firebase.storage().ref();
-    console.log(
-      'filepath, filename and extension',
-      `${contentIdReturned}/${fileName}`,
-    );
+    // console.log(
+    //   'filepath, filename and extension',
+    //   `${contentIdReturned}/${fileName}`,
+    // );
     // Create a reference to 'images/mountains.jpg'
     var imageRef = storageRef.child(
       `${contentIdReturned}/${fileName}.${fileExtension}`,
@@ -178,6 +176,25 @@ const CreateContent = () => {
         );
       });
   };
+
+  const clearForm = () => {
+    setTitle('');
+    setSubtitle('');
+    setType(1);
+    setDescription('');
+    setThumbnail({});
+    setMainImage({});
+    setImageList([]);
+    setVideoUrl('');
+    setOrderNo(0);
+    setErrors({});
+    setImageListInputButtons([0]);
+    setContentId('');
+    document.getElementById('mainImageInput').value = null;
+    document.getElementById('thumbnailInput').value = null;
+    document.getElementById('imageListInput0').value = null;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -290,10 +307,10 @@ const CreateContent = () => {
       } else if (type === 3) {
         postContentData
           .then(async (contentIdReturned) => {
-            console.log('postcontentdata passed ');
+            // console.log('postcontentdata passed ');
             setContentId(contentIdReturned);
             try {
-              console.log('at image uploader ');
+              // console.log('at image uploader ');
 
               return await imageUploader(
                 thumbnail.image,
@@ -308,45 +325,28 @@ const CreateContent = () => {
           })
           .then(() => {
             console.log('submit successfull');
-            setIsSuccessfull(!isFailed);
-            setLoading(false);
           })
           .catch((err) => {
-            console.log('submit failed');
+            // console.log('submit failed');
             setLoading(false);
             setIsSuccessfull(!isFailed);
             return failContentUpload(err);
           });
-
-        // .then(() => {
-        //Empty the form
-        // setTitle('');
-        // setSubtitle('');
-        // setType(1);
-        // setDescription('');
-        // setThumbnail('');
-        // setMainImage('');
-        // setImageList(['']);
-        // setVideoUrl('');
-        // setOrderNo(0);
-        // setErrors({});
-        // setIsSuccessfull(true);
-        // })
       }
     } else {
       //TODO: display that token has expired. Login again
     }
   };
   React.useEffect(() => {
-    console.log('imageList', imageList);
-    if (imageList[1]) {
-      console.log('imageList.image', imageList[1].image);
-    }
+    // console.log('imageList', imageList);
+    // if (imageList[1]) {
+    //   console.log('imageList.image', imageList[1].image);
+    // }
     // console.log('mainImage', mainImage);
     // if (mainImage) console.log('mainImag.imagee', mainImage.image);
-    console.log('loading', loading);
-    console.log('isSuccessfull', isSuccessfull);
-    console.log('isFailed', isFailed);
+    // console.log('loading', loading);
+    // console.log('isSuccessfull', isSuccessfull);
+    // console.log('isFailed', isFailed);
   }, [
     imageListInputButtons,
     type,
@@ -677,6 +677,7 @@ const CreateContent = () => {
                 setIsSuccessfull(false);
                 setLoading(false);
                 setIsFailed(false);
+                clearForm();
               }}
               color='primary'>
               Dismiss

@@ -50,9 +50,6 @@ export default function Content(props) {
           ...[res.data.mainImage],
           ...res.data.imageList,
         ]);
-
-        // const serafetting = [...[res.data.mainImage], ...res.data.imageList];
-        // console.log('serafetting', serafetting);
       })
       .then(() => {
         setLoading(false);
@@ -70,6 +67,7 @@ export default function Content(props) {
             <div className='player-wrapper'>
               <ReactPlayer
                 url={contentPage.videoUrl}
+                controls={true}
                 width='100%'
                 height='100%'
                 className='react-player'
@@ -82,9 +80,7 @@ export default function Content(props) {
               <Typography gutterBottom variant='h5'>
                 {contentPage.subtitle}
               </Typography>
-              <Typography variant='h6' color='textSecondary' component='p'>
-                {contentPage.description}
-              </Typography>
+              <p className='with-newlines'>{contentPage.description}</p>
             </CardContent>
           </CardActionArea>
           <CardActions>
@@ -133,6 +129,15 @@ export default function Content(props) {
             </Link>
           </CardActions>
         </Card>
+        {images.map((imageLink, index) => (
+          <Card key={index} className={classes.mediaRoot} elevation={5}>
+            <CardMedia
+              component='img'
+              className={classes.cardMedia}
+              image={imageLink}
+            />
+          </Card>
+        ))}
       </div>
     </Grow>
   );

@@ -11,6 +11,7 @@ const ContentState = (props) => {
     error: null,
     current: null,
     allContentPath: '/content',
+    contentToCreate: {},
   };
 
   const [state, dispatch] = useReducer(contentReducer, initialState);
