@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import axios from 'axios';
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -49,6 +54,7 @@ function App() {
               <Route exact path='/content/:contentId' component={Content} />
               <Route exact path='/create-content' component={CreateContent} />
               <Route exact path='/' component={Home} />
+              <Redirect to='/' />
             </Switch>
           </main>
         </Router>

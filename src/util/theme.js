@@ -106,7 +106,7 @@ export const styles = (theme) => ({
   },
   listItemText: {
     fontSize: '1.5em',
-    margin: theme.spacing(0),
+    margin: theme.spacing(-1),
   },
 
   imageContentBox: {

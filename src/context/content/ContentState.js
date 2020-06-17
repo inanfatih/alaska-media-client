@@ -1,13 +1,18 @@
 import React, { useReducer } from 'react';
 import ContentContext from './contentContext';
 import contentReducer from './contentReducer';
-import { GET_CONTENT, CONTENT_ERROR, DELETE_CONTENT } from '../types';
+import {
+  GET_CONTENT,
+  CONTENT_ERROR,
+  DELETE_CONTENT,
+  SET_LOADING,
+} from '../types';
 import axios from 'axios';
 
 const ContentState = (props) => {
   const initialState = {
     content: [],
-    loading: true,
+    loading: false,
     error: null,
     current: null,
     allContentPath: '/content',
@@ -17,6 +22,7 @@ const ContentState = (props) => {
   const [state, dispatch] = useReducer(contentReducer, initialState);
 
   const getContent = async (dataPath) => {
+    setLoading();
     try {
       const res = await axios.get(dataPath);
       console.log('res', res.data);
@@ -33,6 +39,7 @@ const ContentState = (props) => {
   };
 
   const deleteContent = async (contentId) => {
+    setLoading();
     try {
       const res = await axios.delete(`/content/${contentId}`);
 
@@ -48,6 +55,9 @@ const ContentState = (props) => {
     }
   };
 
+  // Set Loading
+  const setLoading = () => dispatch({ type: SET_LOADING });
+
   return (
     <ContentContext.Provider
       value={{
@@ -58,6 +68,7 @@ const ContentState = (props) => {
         allContentPath: state.allContentPath,
         getContent,
         deleteContent,
+        setLoading,
       }}>
       {props.children}
     </ContentContext.Provider>

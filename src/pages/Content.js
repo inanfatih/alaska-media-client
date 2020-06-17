@@ -74,13 +74,15 @@ export default function Content(props) {
               />
             </div>
             <CardContent>
-              <Typography gutterBottom variant='h3'>
+              <Typography gutterBottom style={{ fontSize: '2.5em' }}>
                 {contentPage.title}
               </Typography>
               <Typography gutterBottom variant='h5'>
                 {contentPage.subtitle}
               </Typography>
-              <p className='with-newlines'>{contentPage.description}</p>
+              <p className='with-newlines' style={{ fontSize: '1.2em' }}>
+                {contentPage.description}
+              </p>
             </CardContent>
           </CardActionArea>
           <CardActions>
@@ -110,15 +112,15 @@ export default function Content(props) {
               title={contentPage.title}
             />
             <CardContent>
-              <Typography gutterBottom variant='h3'>
+              <Typography gutterBottom style={{ fontSize: '2.5em' }}>
                 {contentPage.title}
               </Typography>
               <Typography gutterBottom variant='h5'>
                 {contentPage.subtitle}
               </Typography>
-              <Typography variant='h6' color='textSecondary' component='p'>
+              <p className='with-newlines' style={{ fontSize: '1.2em' }}>
                 {contentPage.description}
-              </Typography>
+              </p>
             </CardContent>
           </CardActionArea>
           <CardActions>
@@ -157,15 +159,15 @@ export default function Content(props) {
               title={contentPage.title}
             />
             <CardContent>
-              <Typography gutterBottom variant='h3'>
+              <Typography gutterBottom style={{ fontSize: '2.5em' }}>
                 {contentPage.title}
               </Typography>
               <Typography gutterBottom variant='h5'>
                 {contentPage.subtitle}
               </Typography>
-              <Typography variant='h6' color='textSecondary' component='p'>
+              <p className='with-newlines' style={{ fontSize: '1.2em' }}>
                 {contentPage.description}
-              </Typography>
+              </p>
             </CardContent>
             <CardActions>
               <Link to='/contact'>

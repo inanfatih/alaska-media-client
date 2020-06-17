@@ -3,6 +3,7 @@ import {
   CONTENT_ERROR,
   // SET_DATAPATH,
   DELETE_CONTENT,
+  SET_LOADING,
 } from '../types';
 
 export default (state, action) => {
@@ -30,6 +31,11 @@ export default (state, action) => {
         content: action.payload,
         error: action.payload,
         loading: false,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

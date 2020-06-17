@@ -190,6 +190,9 @@ const CreateContent = () => {
     setErrors({});
     setImageListInputButtons([0]);
     setContentId('');
+    setLoading(false);
+    setIsSuccessfull(false);
+    setIsFailed(false);
     document.getElementById('mainImageInput').value = null;
     document.getElementById('thumbnailInput').value = null;
     document.getElementById('imageListInput0').value = null;
@@ -672,14 +675,7 @@ const CreateContent = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={() => {
-                setIsSuccessfull(false);
-                setLoading(false);
-                setIsFailed(false);
-                clearForm();
-              }}
-              color='primary'>
+            <Button onClick={clearForm} color='primary'>
               Dismiss
             </Button>
           </DialogActions>
