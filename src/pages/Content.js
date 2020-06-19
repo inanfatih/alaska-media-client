@@ -147,46 +147,49 @@ export default function Content(props) {
   const twoDthreeDMarkup = (
     <Grow in timeout={500}>
       <div className={classes.imageContentBox}>
-        <Card className={classes.mediaRoot} elevation={5}>
-          <CardActionArea
-            style={{
-              cursor: 'default',
-            }}>
-            <CardMedia
-              component='img'
-              className={classes.cardMedia}
-              image={contentPage.mainImage}
-              title={contentPage.title}
-            />
-            <CardContent>
-              <Typography gutterBottom style={{ fontSize: '2.5em' }}>
-                {contentPage.title}
-              </Typography>
-              <Typography gutterBottom variant='h5'>
-                {contentPage.subtitle}
-              </Typography>
-              <p className='with-newlines' style={{ fontSize: '1.2em' }}>
-                {contentPage.description}
-              </p>
-            </CardContent>
-            <CardActions>
-              <Link to='/contact'>
-                <Button size='small' color='primary'>
-                  Learn More
-                </Button>
-              </Link>
-            </CardActions>
-          </CardActionArea>
-        </Card>
-        {images.map((imageLink, index) => (
-          <Card key={index} className={classes.mediaRoot} elevation={5}>
-            <CardMedia
-              component='img'
-              className={classes.cardMedia}
-              image={imageLink}
-            />
+        <div style={{ background: 'white' }}>
+          <Card className={classes.mediaRoot} >
+            <CardActionArea
+              style={{
+                cursor: 'default',
+              }}>
+              <CardMedia
+                borderRadius='0px'
+                component='img'
+                className={classes.cardMedia}
+                image={contentPage.mainImage}
+                title={contentPage.title}
+              />
+              <CardContent>
+                <Typography gutterBottom style={{ fontSize: '2.5em' }}>
+                  {contentPage.title}
+                </Typography>
+                <Typography gutterBottom variant='h5'>
+                  {contentPage.subtitle}
+                </Typography>
+                <p className='with-newlines' style={{ fontSize: '1.2em' }}>
+                  {contentPage.description}
+                </p>
+              </CardContent>
+              <CardActions>
+                <Link to='/contact'>
+                  <Button size='small' color='primary'>
+                    Learn More
+                  </Button>
+                </Link>
+              </CardActions>
+            </CardActionArea>
           </Card>
-        ))}
+          {images.map((imageLink, index) => (
+            <Card key={index} className={classes.mediaRoot} >
+              <CardMedia
+                component='img'
+                className={classes.cardMedia}
+                image={imageLink}
+              />
+            </Card>
+          ))}
+        </div>
       </div>
     </Grow>
   );

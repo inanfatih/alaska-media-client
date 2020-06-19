@@ -22,10 +22,10 @@ import Videos from './pages/Videos';
 import SocialMedia from './pages/SocialMedia';
 import Content from './pages/Content';
 import MisionVision from './pages/MisionVision';
-import Admin from './admin/Admin';
-import Login from './admin/Login';
-import CreateContent from './admin/CreateContent';
-import EditContent from './admin/EditContent';
+import Admin from './pages/Admin';
+import Login from './pages/Login';
+import CreateContent from './pages/CreateContent';
+import EditContent from './pages/EditContent';
 import ContentState from './context/content/ContentState';
 
 axios.defaults.baseURL =

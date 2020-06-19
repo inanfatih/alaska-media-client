@@ -16,6 +16,8 @@ import CardContent from '@material-ui/core/CardContent';
 
 import firebase from '../firebase/firebase';
 import { styles } from '../util/theme';
+import IsAuthenticated from '../util/IsAuthenticated';
+
 import '../App.css';
 
 class login extends Component {
@@ -61,11 +63,17 @@ class login extends Component {
         firebase
           .auth()
           .signInWithEmailAndPassword(this.state.email, this.state.password)
-          .catch((error) => console.log('error.message', error.message));
+          .catch((error) => {
+            console.log('error.message', error.message);
+            this.setState({
+              loading: false,
+            });
+          });
       })
       .catch((err) => {
         this.setState({
           errors: err.response.data,
+          loading: false,
         });
       });
   };
@@ -78,6 +86,9 @@ class login extends Component {
   };
 
   render() {
+    if (IsAuthenticated()) {
+      this.props.history.push('/admin');
+    }
     const { classes } = this.props;
     const { errors, loading } = this.state;
     return (

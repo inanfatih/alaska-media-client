@@ -144,6 +144,9 @@ export const styles = (theme) => ({
   mediaRoot: {
     margin: 'auto',
     marginBottom: '2.5%',
+    borderRadius: '0px',
+    boxShadow: 'none',
+    border: 0,
   },
 
   contactContentBox: {
