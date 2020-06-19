@@ -27,6 +27,7 @@ import Login from './pages/Login';
 import CreateContent from './pages/CreateContent';
 import EditContent from './pages/EditContent';
 import ContentState from './context/content/ContentState';
+import ContactUsMessages from './pages/ContactUsMessages';
 
 axios.defaults.baseURL =
   'https://us-central1-alaska-media.cloudfunctions.net/api';
@@ -53,6 +54,7 @@ function App() {
               <Route exact path='/edit-content' component={EditContent} />
               <Route exact path='/content/:contentId' component={Content} />
               <Route exact path='/create-content' component={CreateContent} />
+              <Route exact path='/messages' component={ContactUsMessages} />
               <Route exact path='/' component={Home} />
               <Redirect to='/' />
             </Switch>

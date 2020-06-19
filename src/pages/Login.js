@@ -31,6 +31,12 @@ class login extends Component {
     };
   }
 
+  componentWillMount() {
+    if (IsAuthenticated()) {
+      this.props.history.push('/admin');
+    }
+  }
+
   handleSubmit = (event) => {
     // firebase.auth().onAuthStateChanged((user) => {
     //   if (user) {
@@ -86,9 +92,6 @@ class login extends Component {
   };
 
   render() {
-    if (IsAuthenticated()) {
-      this.props.history.push('/admin');
-    }
     const { classes } = this.props;
     const { errors, loading } = this.state;
     return (

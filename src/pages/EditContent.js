@@ -15,8 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EditContent() {
-  IsAuthenticated();
+export default function EditContent(props) {
+  if (!IsAuthenticated()) {
+    props.history.push('/login');
+  }
   const classes = useStyles();
 
   const [state, setState] = React.useState([]);

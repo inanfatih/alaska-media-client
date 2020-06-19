@@ -1,6 +1,7 @@
 import React from 'react';
 
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 //MUI stuff
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -38,9 +39,10 @@ import firebase, { firebaseConfig } from '../firebase/firebase';
 
 const useStyles = makeStyles(styles);
 
-const CreateContent = () => {
-  IsAuthenticated();
-
+const CreateContent = (props) => {
+  if (!IsAuthenticated()) {
+    props.history.push('/login');
+  }
   const classes = useStyles();
 
   const [title, setTitle] = React.useState('');
@@ -370,6 +372,11 @@ const CreateContent = () => {
       document.getElementById('imageListInput0').value = null;
   };
 
+  const logout = () => {
+    localStorage.removeItem('AlaskaMediaToken');
+    delete axios.defaults.headers.common['Authorization'];
+  };
+
   return (
     <div>
       <Grow in timeout={500}>
@@ -645,6 +652,17 @@ const CreateContent = () => {
                         className='classes.progress'
                         size='50'></CircularProgress>
                     )}
+                  </Button>
+
+                  <Button
+                    size='large'
+                    variant='contained'
+                    color='secondary'
+                    style={{ margin: '1% 2%', width: '95%', padding: '1%' }}
+                    component={Link}
+                    to='/'
+                    onClick={logout}>
+                    Logout
                   </Button>
                 </form>
               </CardContent>

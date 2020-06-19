@@ -12,14 +12,13 @@ export default function IsAuthenticated() {
       localStorage.removeItem('AlaskaMediaToken');
       delete axios.defaults.headers.common['Authorization'];
       isAuthenticated = false;
-      window.location.href = '/login';
+      // window.location.href = '/admin';
     } else {
       axios.defaults.headers.common['Authorization'] = token;
     }
   } else {
     delete axios.defaults.headers.common['Authorization'];
     isAuthenticated = false;
-    window.location.href = '/login';
   }
   return isAuthenticated;
 }
