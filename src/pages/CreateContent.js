@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -22,7 +22,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-
+import BackupIcon from '@material-ui/icons/Backup';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -45,22 +45,21 @@ const CreateContent = (props) => {
   }
   const classes = useStyles();
 
-  const [title, setTitle] = React.useState('');
-  const [subtitle, setSubtitle] = React.useState('');
-  const [type, setType] = React.useState(1);
-  const [description, setDescription] = React.useState('');
-  const [errors, setErrors] = React.useState({});
-  const [imageListInputButtons, setImageListInputButtons] = React.useState([0]);
-  const [videoUrl, setVideoUrl] = React.useState('');
-  const [orderNo, setOrderNo] = React.useState(0);
-  const [contentId, setContentId] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [isSuccessfull, setIsSuccessfull] = React.useState(false);
-  const [isFailed, setIsFailed] = React.useState(false);
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [type, setType] = useState(1);
+  const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState({});
+  const [videoUrl, setVideoUrl] = useState('');
+  const [orderNo, setOrderNo] = useState(0);
+  const [contentId, setContentId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [isSuccessfull, setIsSuccessfull] = useState(false);
+  const [isFailed, setIsFailed] = useState(false);
 
-  const [thumbnail, setThumbnail] = React.useState({});
-  const [mainImage, setMainImage] = React.useState({});
-  const [imageList, setImageList] = React.useState([]);
+  const [thumbnail, setThumbnail] = useState({});
+  const [mainImage, setMainImage] = useState({});
+  const [imageList, setImageList] = useState(['']);
 
   let contentData = {
     title: title,
@@ -136,12 +135,13 @@ const CreateContent = (props) => {
 
   const uploadImageList = (event, index) => {
     const image = event.target.files[0];
-    if (image) {
-      setImageList([...imageList, image]);
-    }
 
     if (image && (image.type === 'image/png' || image.type === 'image/jpeg')) {
-      return setImageList([...imageList, image]);
+      return setImageList([
+        ...imageList.slice(0, index),
+        image,
+        ...imageList.slice(index + 1),
+      ]);
     } else {
       window.alert('Please select images with only jpg, jpeg or png formats');
       document.getElementById(`imageListInput${index}`).value = null;
@@ -222,16 +222,18 @@ const CreateContent = (props) => {
           })
           .then((contentIdReturned) => {
             for (const key in imageList) {
-              try {
-                imageUploader(
-                  imageList[key],
-                  'imageList',
-                  key,
-                  contentIdReturned,
-                );
-              } catch (error) {
-                console.log('error in imageList upload', error);
-                setIsFailed(true);
+              if (imageList[key] !== '') {
+                try {
+                  imageUploader(
+                    imageList[key],
+                    'imageList',
+                    key,
+                    contentIdReturned,
+                  );
+                } catch (error) {
+                  console.log('error in imageList upload', error);
+                  setIsFailed(true);
+                }
               }
             }
             return contentIdReturned;
@@ -321,27 +323,14 @@ const CreateContent = (props) => {
           });
       }
     } else {
-      //TODO: display that token has expired. Login again
+      window.alert('Session expired. Login again');
     }
   };
-  React.useEffect(() => {
-    console.log('imageList', imageList);
-    if (imageList[1]) {
-      console.log('imageList.image', imageList[1].image);
-    }
-    // console.log('mainImage', mainImage);
-    // if (mainImage) console.log('mainImag.imagee', mainImage.image);
-    console.log('loading', loading);
-    console.log('isSuccessfull', isSuccessfull);
-    console.log('isFailed', isFailed);
-  }, [
-    imageListInputButtons,
+  useEffect(() => {}, [
     type,
     contentData,
     loading,
     thumbnail,
-    imageList.event,
-    mainImage.event,
     imageList,
     mainImage,
     isSuccessfull,
@@ -359,7 +348,6 @@ const CreateContent = (props) => {
     setVideoUrl('');
     setOrderNo(0);
     setErrors({});
-    setImageListInputButtons([0]);
     setContentId('');
     setLoading(false);
     setIsSuccessfull(false);
@@ -375,6 +363,15 @@ const CreateContent = (props) => {
   const logout = () => {
     localStorage.removeItem('AlaskaMediaToken');
     delete axios.defaults.headers.common['Authorization'];
+  };
+
+  const removeFromImageList = (index) => {
+    setImageList([...imageList.slice(0, index), ...imageList.slice(index + 1)]);
+  };
+
+  const addToImageList = () => {
+    setImageList([...imageList, '']);
+    console.log('imageListInputButtons After', imageList);
   };
 
   return (
@@ -533,13 +530,22 @@ const CreateContent = (props) => {
                         marginBottom: '1%',
                       }}>
                       <Button variant='contained' component='label'>
+                        <BackupIcon style={{ marginRight: '1rem' }} />
+
                         <input
                           id='thumbnailInput'
                           type='file'
                           accept='image/*'
+                          style={{ display: 'none' }}
                           required
                           onChange={uploadThumbnail}
                         />
+
+                        <p>
+                          {Object.keys(thumbnail).length !== 0
+                            ? thumbnail.image.name
+                            : '***Select Image***'}
+                        </p>
                       </Button>
                     </div>
                   </div>
@@ -567,13 +573,21 @@ const CreateContent = (props) => {
                           marginBottom: '1%',
                         }}>
                         <Button variant='contained' component='label'>
+                          <BackupIcon style={{ marginRight: '1rem' }} />
+
                           <input
                             id='mainImageInput'
                             type='file'
+                            style={{ display: 'none' }}
                             accept='image/*'
                             required
                             onChange={uploadMainImage}
                           />
+                          <p>
+                            {Object.keys(mainImage).length !== 0
+                              ? mainImage.image.name
+                              : '***Select Image***'}
+                          </p>
                         </Button>
                       </div>
                     </div>
@@ -596,40 +610,38 @@ const CreateContent = (props) => {
                         Upload additional images for 2D & 3D (These will be
                         displayed after the main image)
                       </div>
-                      {imageListInputButtons.map((item, index) => (
+                      {imageList.map((item, index) => (
                         <div
                           style={{
                             marginBottom: '1%',
                           }}
                           key={index}>
                           <Button variant='contained' component='label'>
+                            <BackupIcon style={{ marginRight: '1rem' }} />
                             <input
                               id={`imageListInput${index}`}
                               type='file'
                               accept='image/*'
+                              style={{ display: 'none' }}
                               onChange={(event) => {
                                 uploadImageList(event, index);
                               }}
                             />
+                            <p>
+                              {imageList[index].name
+                                ? imageList[index].name
+                                : '***Select Image***'}
+                            </p>
                           </Button>
-                          <Button
-                            onClick={() => {
-                              setImageListInputButtons(['']);
-                              //TODO: Clear imageListArray
-                              // console.log('imageListInputButtons After', imageListInputButtons);
-                            }}>
-                            <RemoveCircleIcon />
+                          <Button>
+                            <RemoveCircleIcon
+                              onClick={() => removeFromImageList(index)}
+                            />
                           </Button>
                         </div>
                       ))}
 
-                      <Button
-                        onClick={() => {
-                          setImageListInputButtons([
-                            ...imageListInputButtons,
-                            '',
-                          ]);
-                        }}>
+                      <Button onClick={addToImageList}>
                         Add more images <AddCircleIcon />
                       </Button>
                     </div>
@@ -646,11 +658,12 @@ const CreateContent = (props) => {
                       padding: '1%',
                     }}
                     disabled={!loading && (isSuccessfull || isFailed)}>
-                    Create Content
-                    {loading && (
+                    {loading ? (
                       <CircularProgress
-                        className='classes.progress'
-                        size='50'></CircularProgress>
+                        color='secondary'
+                        size={30}></CircularProgress>
+                    ) : (
+                      'Create Content'
                     )}
                   </Button>
 
@@ -670,41 +683,46 @@ const CreateContent = (props) => {
           </Paper>
         </div>
       </Grow>
-
-      {(loading || isSuccessfull || isFailed) && (
-        <Dialog
-          open={loading || isSuccessfull || isFailed}
-          keepMounted
-          onClose={() => {
-            setIsSuccessfull(false);
-            setIsFailed(false);
-            setLoading(false);
-          }}
-          aria-labelledby='alert-dialog-slide-title'
-          aria-describedby='alert-dialog-slide-description'>
-          <DialogTitle id='alert-dialog-slide-title'>
-            {!isSuccessfull && !isFailed
-              ? 'Creating the content'
-              : isFailed
-              ? 'Failed'
-              : 'Successful'}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id='alert-dialog-slide-description'>
-              {!isSuccessfull && !isFailed
-                ? 'Please Wait'
-                : isFailed
-                ? `Failed - Try again ${contentId}`
-                : `Good job!!! Content is created with Content ID:  ${contentId}`}
-            </DialogContentText>
-          </DialogContent>
+      <Dialog
+        open={loading || isSuccessfull || isFailed}
+        keepMounted
+        onClose={() => {
+          setIsSuccessfull(false);
+          setIsFailed(false);
+          setLoading(false);
+        }}
+        aria-labelledby='alert-dialog-slide-title'
+        aria-describedby='alert-dialog-slide-description'>
+        <DialogTitle id='alert-dialog-slide-title'>
+          {!isSuccessfull && !isFailed
+            ? 'Uploading content images - Please wait'
+            : isFailed
+            ? 'Failed'
+            : 'Successful'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-slide-description'>
+            {!isSuccessfull && !isFailed ? (
+              <CircularProgress
+                color='secondary'
+                size={50}
+                style={{ display: 'block', margin: 'auto' }}
+              />
+            ) : isFailed ? (
+              `Failed - Try again ${contentId}`
+            ) : (
+              `Good job!!! Content is created with Content ID:  ${contentId}`
+            )}
+          </DialogContentText>
+        </DialogContent>
+        {(isSuccessfull || isFailed) && (
           <DialogActions>
             <Button onClick={clearForm} color='primary'>
               Dismiss
             </Button>
           </DialogActions>
-        </Dialog>
-      )}
+        )}
+      </Dialog>
     </div>
   );
 };

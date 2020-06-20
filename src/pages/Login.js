@@ -117,11 +117,7 @@ class login extends Component {
                     <Typography
                       variant='h4'
                       component='h2'
-                      style={{
-                        marginBottom: '2%',
-                        marginLeft: '2%',
-                        width: '95%',
-                      }}>
+                      style={{ margin: '2%', width: '95%', padding: '1%' }}>
                       Login
                     </Typography>
 
@@ -131,7 +127,7 @@ class login extends Component {
                       type='email'
                       variant='outlined'
                       label='Email'
-                      className={classes.textField}
+                      style={{ margin: '2%', width: '95%', padding: '1%' }}
                       helperText={errors.email}
                       error={errors.email ? true : false}
                       value={this.state.email}
@@ -144,11 +140,11 @@ class login extends Component {
                       type='password'
                       variant='outlined'
                       label='Password'
-                      className={classes.textField}
                       helperText={errors.password}
                       error={errors.password ? true : false}
                       value={this.state.password}
                       onChange={this.handleChange}
+                      style={{ margin: '2%', width: '95%', padding: '1%' }}
                       fullWidth
                     />
                     {errors.general && (
@@ -163,13 +159,18 @@ class login extends Component {
                       type='submit'
                       variant='contained'
                       color='primary'
-                      style={{ margin: '2%', width: '95%', padding: '1%' }}
+                      style={{
+                        margin: '2%',
+                        width: '95%',
+                        padding: '1%',
+                      }}
                       disabled={loading}>
-                      Login
-                      {loading && (
+                      {loading ? (
                         <CircularProgress
-                          className='classes.progress'
-                          size='30'></CircularProgress>
+                          color='secondary'
+                          size={30}></CircularProgress>
+                      ) : (
+                        'Login'
                       )}
                     </Button>
                   </form>
