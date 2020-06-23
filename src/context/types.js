@@ -2,6 +2,7 @@ export const CREATE_CONTENT = 'CREATE_CONTENT';
 export const DELETE_CONTENT = 'DELETE_CONTENT';
 export const GET_CONTENT = 'GET_CONTENT';
 export const CURRENT_CONTENT = 'CURRENT_CONTENT';
+export const SET_DATAPATH = 'SET_DATAPATH';
 export const CONTENT_ERROR = 'CONTENT_ERROR';
 
 export const USER_LOADED = 'USER_LOADED';

@@ -6,6 +6,7 @@ import {
   CONTENT_ERROR,
   DELETE_CONTENT,
   SET_LOADING,
+  SET_DATAPATH,
 } from '../types';
 import axios from 'axios';
 
@@ -17,6 +18,7 @@ const ContentState = (props) => {
     current: null,
     allContentPath: '/content',
     contentToCreate: {},
+    dataPath: '/content',
   };
 
   const [state, dispatch] = useReducer(contentReducer, initialState);
@@ -55,6 +57,13 @@ const ContentState = (props) => {
     }
   };
 
+  const setDataPath = (dataPath) => {
+    dispatch({
+      type: SET_DATAPATH,
+      payload: dataPath,
+    });
+  };
+
   // Set Loading
   const setLoading = () => dispatch({ type: SET_LOADING });
 
@@ -69,6 +78,7 @@ const ContentState = (props) => {
         getContent,
         deleteContent,
         setLoading,
+        setDataPath,
       }}>
       {props.children}
     </ContentContext.Provider>

@@ -10,6 +10,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 //Pages
 import { styles } from '../util/theme';
@@ -41,7 +47,6 @@ const Contact = () => {
     axios
       .post('/contact', messageObject)
       .then((res) => {
-        console.log('res', res);
         console.log('res.data', res.data);
         setIsSuccessful(true);
         console.log('setIsSuccessful', isSuccessful);
@@ -50,10 +55,6 @@ const Contact = () => {
         setPhone('');
         setMessage('');
         setIsPosted(true);
-        setTimeout(() => {
-          setIsFailed(false);
-          setIsSuccessful(false);
-        }, 5000);
       })
       .catch((err) => {
         console.log('err', err);
@@ -69,11 +70,15 @@ const Contact = () => {
         ) {
           setEmailInvalid(true);
         } else setEmailInvalid(false);
-        setTimeout(() => {
-          setIsFailed(false);
-          setIsSuccessful(false);
-        }, 5000);
       });
+  };
+  const closeDialog = () => {
+    if (isSuccessful) {
+      setIsPosted(false);
+    }
+
+    setIsFailed(false);
+    setIsSuccessful(false);
   };
 
   return (
@@ -184,33 +189,6 @@ const Contact = () => {
                     We'll never share your contact details.
                   </FormHelperText>
 
-                  {isSuccessful && (
-                    <Button
-                      style={{
-                        margin: '2%',
-                        width: '95%',
-                        background: '#4BB543',
-                        padding: '1%',
-                        textAlign: 'center',
-                        color: 'white',
-                        cursor: 'default',
-                      }}>
-                      MESSAGE SENT
-                    </Button>
-                  )}
-                  {isFailed && (
-                    <Button
-                      style={{
-                        margin: '2%',
-                        width: '95%',
-                        background: '#DE2548',
-                        padding: '1%',
-                        textAlign: 'center',
-                        color: 'white',
-                      }}>
-                      SENDING FAILED - Please enter all fields
-                    </Button>
-                  )}
                   <Button
                     size='large'
                     type='submit'
@@ -226,6 +204,44 @@ const Contact = () => {
           </Paper>
         </div>
       </Grow>
+
+      <Dialog
+        open={isSuccessful || isFailed}
+        keepMounted
+        onClose={() => {
+          setIsSuccessful(false);
+          setIsFailed(false);
+        }}
+        aria-labelledby='alert-dialog-slide-title'
+        aria-describedby='alert-dialog-slide-description'>
+        <DialogTitle id='alert-dialog-slide-title'>
+          {!isSuccessful && !isFailed
+            ? 'Sending your message - Please wait'
+            : isFailed
+            ? 'Failed'
+            : 'Successful'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-slide-description'>
+            {!isSuccessful && !isFailed ? (
+              <CircularProgress
+                color='secondary'
+                size={50}
+                style={{ display: 'block', margin: 'auto' }}
+              />
+            ) : isFailed ? (
+              'Failed - Please enter all fields and try again'
+            ) : (
+              'Thank you for your message. We will contact you soon.'
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color='primary'>
+            Dismiss
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
