@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import axios from 'axios';
@@ -29,17 +29,15 @@ import '../App.css';
 const useStyles = makeStyles(styles);
 
 export default function Content(props) {
-  const [contentPage, setContent] = React.useState({});
-  const [images, setImage] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [imageLightBoxImageList, setImageLightBoxImageList] = React.useState(
-    [],
-  );
+  const [contentPage, setContent] = useState({});
+  const [images, setImage] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [imageLightBoxImageList, setImageLightBoxImageList] = useState([]);
   const classes = useStyles();
 
   const contentId = props.match.params.contentId;
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     axios
       .get(`/content/${contentId}`)
@@ -148,7 +146,7 @@ export default function Content(props) {
     <Grow in timeout={500}>
       <div className={classes.imageContentBox}>
         <div style={{ background: 'white' }}>
-          <Card className={classes.mediaRoot} >
+          <Card className={classes.mediaRoot}>
             <CardActionArea
               style={{
                 cursor: 'default',
@@ -181,7 +179,7 @@ export default function Content(props) {
             </CardActionArea>
           </Card>
           {images.map((imageLink, index) => (
-            <Card key={index} className={classes.mediaRoot} >
+            <Card key={index} className={classes.mediaRoot}>
               <CardMedia
                 component='img'
                 className={classes.cardMedia}

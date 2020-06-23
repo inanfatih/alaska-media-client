@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 //MUI
@@ -25,60 +25,102 @@ const useStyles = makeStyles(styles);
 
 const Contact = () => {
   const classes = useStyles();
+  const [messageObject, setMessageObject] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
 
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [message, setMessage] = React.useState('');
-  const [errors, setErrors] = React.useState('');
-  const [isFailed, setIsFailed] = React.useState(false);
-  const [isPosted, setIsPosted] = React.useState(false);
-  const [isSuccessful, setIsSuccessful] = React.useState(false);
-  const [emailInvalid, setEmailInvalid] = React.useState(false);
+  const { name, email, phone, message } = messageObject;
+
+  const [validators, setValidators] = useState({
+    errors: '',
+    isFailed: false,
+    isPosted: false,
+    isSuccessful: false,
+    emailInvalid: false,
+  });
+
+  const { errors, isFailed, isPosted, isSuccessful, emailInvalid } = validators;
+
+  useEffect(() => {}, [
+    errors,
+    isFailed,
+    isPosted,
+    isSuccessful,
+    emailInvalid,
+    name,
+    email,
+    phone,
+    message,
+  ]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    let messageObject = {
-      name: name,
-      email: email,
-      phone: phone,
-      message: message,
-    };
 
     axios
       .post('/contact', messageObject)
       .then((res) => {
-        console.log('res.data', res.data);
-        setIsSuccessful(true);
-        console.log('setIsSuccessful', isSuccessful);
-        setName('');
-        setEmail('');
-        setPhone('');
-        setMessage('');
-        setIsPosted(true);
+        setValidators({
+          ...validators,
+          isSuccessful: true,
+          isPosted: true,
+        });
+
+        setMessageObject({
+          ...messageObject,
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+        });
       })
       .catch((err) => {
-        console.log('err', err);
-        setErrors(err.errors);
-        console.log('errors', errors);
-        setIsFailed(true);
-        console.log('isFailed', isFailed);
-        setIsPosted(true);
         if (
           !email.match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
           )
         ) {
-          setEmailInvalid(true);
-        } else setEmailInvalid(false);
+          setValidators({
+            ...validators,
+            errors: err.errors,
+            isFailed: false,
+            isPosted: true,
+            emailInvalid: true,
+          });
+        } else
+          setValidators({
+            ...validators,
+            errors: err.errors,
+            isFailed: false,
+            isPosted: true,
+            emailInvalid: false,
+          });
       });
   };
   const closeDialog = () => {
     if (isSuccessful) {
-      setIsPosted(false);
+      setValidators({
+        ...validators,
+        isPosted: false,
+        isFailed: false,
+        isSuccessful: false,
+      });
+    } else {
+      setValidators({
+        ...validators,
+        isFailed: false,
+        isSuccessful: false,
+      });
     }
+  };
 
-    setIsFailed(false);
-    setIsSuccessful(false);
+  const onInput = (e) => {
+    setMessageObject({
+      ...messageObject,
+      [e.target.id]: e.target.value,
+    });
   };
 
   return (
@@ -107,7 +149,7 @@ const Contact = () => {
                       name.length === 0 ? 'Please enter your name' : ''
                     }
                     value={name}
-                    onInput={(e) => setName(e.target.value)}
+                    onInput={onInput}
                     error={
                       !isPosted
                         ? false
@@ -122,16 +164,7 @@ const Contact = () => {
                     label='Email'
                     variant='outlined'
                     value={email}
-                    onInput={(e) => {
-                      setEmail(e.target.value);
-                      if (
-                        !email.match(
-                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        )
-                      ) {
-                        setEmailInvalid(true);
-                      } else setEmailInvalid(false);
-                    }}
+                    onInput={onInput}
                     error={
                       emailInvalid && isPosted && !isSuccessful ? true : false
                     }
@@ -147,7 +180,7 @@ const Contact = () => {
                     label='Phone Number'
                     variant='outlined'
                     value={phone}
-                    onInput={(e) => setPhone(e.target.value)}
+                    onInput={onInput}
                     helperText={
                       phone.length === 0 ? 'Please enter your phone number' : ''
                     }
@@ -167,7 +200,7 @@ const Contact = () => {
                     label='Message'
                     variant='outlined'
                     value={message}
-                    onInput={(e) => setMessage(e.target.value)}
+                    onInput={onInput}
                     helperText={
                       message.length === 0 ? 'Please enter your message' : ''
                     }
@@ -208,10 +241,7 @@ const Contact = () => {
       <Dialog
         open={isSuccessful || isFailed}
         keepMounted
-        onClose={() => {
-          setIsSuccessful(false);
-          setIsFailed(false);
-        }}
+        onClose={closeDialog}
         aria-labelledby='alert-dialog-slide-title'
         aria-describedby='alert-dialog-slide-description'>
         <DialogTitle id='alert-dialog-slide-title'>
