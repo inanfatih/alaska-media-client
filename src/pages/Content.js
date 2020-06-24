@@ -14,12 +14,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import loadingSipnner from '../layout/loadingSpinner';
+
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 //Pages
 import { styles } from '../util/theme';
 import '../App.css';
+import loadingSipnner from '../layout/loadingSpinner';
 
 //TODO: FOTOLAR VE VIDEOLAR ARASINDA GECIS ICIN KULLANILACAK: https://github.com/rcaferati/react-awesome-slider
 
@@ -110,6 +111,10 @@ export default function Content(props) {
                 className={classes.cardMedia}
                 image={contentPage.mainImage}
                 title={contentPage.title}
+                onClick={() => {
+                  setPhotoIndex(0);
+                  setIsLightboxOpen(true);
+                }}
               />
               <CardContent>
                 <Typography gutterBottom style={{ fontSize: '2.5em' }}>

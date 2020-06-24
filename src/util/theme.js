@@ -139,6 +139,7 @@ export const styles = (theme) => ({
   cardMedia: {
     minWidth: '100%',
     backgroundSize: 'contain',
+    cursor: 'pointer',
   },
 
   mediaRoot: {
