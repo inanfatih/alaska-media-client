@@ -15,6 +15,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import loadingSipnner from '../layout/loadingSpinner';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 //Pages
 import { styles } from '../util/theme';
 import '../App.css';
@@ -32,8 +34,10 @@ export default function Content(props) {
   const [contentPage, setContent] = useState({});
   const [images, setImage] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [imageLightBoxImageList, setImageLightBoxImageList] = useState([]);
+  const [lightboxImageList, setLightBoxImageList] = useState([]);
   const classes = useStyles();
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [isLigtboxOpen, setIsLightboxOpen] = useState(false);
 
   const contentId = props.match.params.contentId;
 
@@ -44,10 +48,7 @@ export default function Content(props) {
       .then(async (res) => {
         setContent(res.data);
         setImage(res.data.imageList);
-        setImageLightBoxImageList([
-          ...[res.data.mainImage],
-          ...res.data.imageList,
-        ]);
+        setLightBoxImageList([...[res.data.mainImage], ...res.data.imageList]);
       })
       .then(() => {
         setLoading(false);
@@ -96,63 +97,15 @@ export default function Content(props) {
   );
 
   const socialMediaMarkup = (
-    <Grow in timeout={500}>
-      <div className={classes.imageContentBox}>
-        <Card className={classes.mediaRoot} elevation={5}>
-          <CardActionArea
-            style={{
-              cursor: 'default',
-            }}>
-            <CardMedia
-              component='img'
-              className={classes.cardMedia}
-              image={contentPage.mainImage}
-              title={contentPage.title}
-            />
-            <CardContent>
-              <Typography gutterBottom style={{ fontSize: '2.5em' }}>
-                {contentPage.title}
-              </Typography>
-              <Typography gutterBottom variant='h5'>
-                {contentPage.subtitle}
-              </Typography>
-              <p className='with-newlines' style={{ fontSize: '1.2em' }}>
-                {contentPage.description}
-              </p>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Link to='/contact'>
-              <Button size='small' color='primary'>
-                Learn More
-              </Button>
-            </Link>
-          </CardActions>
-        </Card>
-        {images.map((imageLink, index) => (
-          <Card key={index} className={classes.mediaRoot} elevation={5}>
-            <CardMedia
-              component='img'
-              className={classes.cardMedia}
-              image={imageLink}
-            />
-          </Card>
-        ))}
-      </div>
-    </Grow>
-  );
-
-  const twoDthreeDMarkup = (
-    <Grow in timeout={500}>
-      <div className={classes.imageContentBox}>
-        <div style={{ background: 'white' }}>
-          <Card className={classes.mediaRoot}>
+    <div>
+      <Grow in timeout={500}>
+        <div className={classes.imageContentBox}>
+          <Card className={classes.mediaRoot} elevation={5}>
             <CardActionArea
               style={{
                 cursor: 'default',
               }}>
               <CardMedia
-                borderRadius='0px'
                 component='img'
                 className={classes.cardMedia}
                 image={contentPage.mainImage}
@@ -169,17 +122,17 @@ export default function Content(props) {
                   {contentPage.description}
                 </p>
               </CardContent>
-              <CardActions>
-                <Link to='/contact'>
-                  <Button size='small' color='primary'>
-                    Learn More
-                  </Button>
-                </Link>
-              </CardActions>
             </CardActionArea>
+            <CardActions>
+              <Link to='/contact'>
+                <Button size='small' color='primary'>
+                  Learn More
+                </Button>
+              </Link>
+            </CardActions>
           </Card>
           {images.map((imageLink, index) => (
-            <Card key={index} className={classes.mediaRoot}>
+            <Card key={index} className={classes.mediaRoot} elevation={5}>
               <CardMedia
                 component='img'
                 className={classes.cardMedia}
@@ -188,8 +141,122 @@ export default function Content(props) {
             </Card>
           ))}
         </div>
-      </div>
-    </Grow>
+      </Grow>
+      {isLigtboxOpen && (
+        <Lightbox
+          mainSrc={lightboxImageList[photoIndex]}
+          onCloseRequest={() => setIsLightboxOpen(false)}
+          nextSrc={
+            lightboxImageList[(photoIndex + 1) % lightboxImageList.length]
+          }
+          prevSrc={
+            lightboxImageList[
+              (photoIndex + lightboxImageList.length - 1) %
+                lightboxImageList.length
+            ]
+          }
+          onMovePrevRequest={() =>
+            setPhotoIndex(
+              (photoIndex + lightboxImageList.length - 1) %
+                lightboxImageList.length,
+            )
+          }
+          onMoveNextRequest={() =>
+            setPhotoIndex(
+              (photoIndex + lightboxImageList.length + 1) %
+                lightboxImageList.length,
+            )
+          }
+        />
+      )}
+    </div>
+  );
+
+  const twoDthreeDMarkup = (
+    <div>
+      <Grow in timeout={500}>
+        <div className={classes.imageContentBox}>
+          <div style={{ background: 'white' }}>
+            <Card className={classes.mediaRoot}>
+              <CardActionArea
+                style={{
+                  cursor: 'default',
+                }}>
+                <CardMedia
+                  borderRadius='0px'
+                  component='img'
+                  className={classes.cardMedia}
+                  image={contentPage.mainImage}
+                  title={contentPage.title}
+                  onClick={() => {
+                    setPhotoIndex(0);
+                    setIsLightboxOpen(true);
+                  }}
+                />
+                <CardContent>
+                  <Typography gutterBottom style={{ fontSize: '2.5em' }}>
+                    {contentPage.title}
+                  </Typography>
+                  <Typography gutterBottom variant='h5'>
+                    {contentPage.subtitle}
+                  </Typography>
+                  <p className='with-newlines' style={{ fontSize: '1.2em' }}>
+                    {contentPage.description}
+                  </p>
+                </CardContent>
+                <CardActions>
+                  <Link to='/contact'>
+                    <Button size='small' color='primary'>
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardActions>
+              </CardActionArea>
+            </Card>
+            {images.map((imageLink, index) => (
+              <Card key={index} className={classes.mediaRoot}>
+                <CardMedia
+                  component='img'
+                  className={classes.cardMedia}
+                  image={imageLink}
+                  onClick={() => {
+                    setPhotoIndex(index + 1);
+                    setIsLightboxOpen(true);
+                  }}
+                />
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Grow>
+      {isLigtboxOpen && (
+        <Lightbox
+          mainSrc={lightboxImageList[photoIndex]}
+          onCloseRequest={() => setIsLightboxOpen(false)}
+          nextSrc={
+            lightboxImageList[(photoIndex + 1) % lightboxImageList.length]
+          }
+          prevSrc={
+            lightboxImageList[
+              (photoIndex + lightboxImageList.length - 1) %
+                lightboxImageList.length
+            ]
+          }
+          onMovePrevRequest={() =>
+            setPhotoIndex(
+              (photoIndex + lightboxImageList.length - 1) %
+                lightboxImageList.length,
+            )
+          }
+          onMoveNextRequest={() =>
+            setPhotoIndex(
+              (photoIndex + lightboxImageList.length + 1) %
+                lightboxImageList.length,
+            )
+          }
+        />
+      )}
+    </div>
   );
 
   return loading
