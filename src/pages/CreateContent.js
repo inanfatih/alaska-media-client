@@ -51,13 +51,13 @@ const CreateContent = (props) => {
     type: 1,
     description: '',
     thumbnail: {},
-    mainImage: {},
+    mainImage: '',
     imageList: [],
     videoUrl: '',
     orderNo: 0,
   });
 
-  const [imageListInputs, setImageListInputs] = useState(['']);
+  const [imageList, setImageList] = useState(['']);
 
   const [validators, setValidators] = useState({
     errors: {},
@@ -73,7 +73,7 @@ const CreateContent = (props) => {
     description,
     thumbnail,
     mainImage,
-    imageList,
+
     videoUrl,
     orderNo,
   } = content;
@@ -146,14 +146,11 @@ const CreateContent = (props) => {
     const image = event.target.files[0];
 
     if (image && (image.type === 'image/png' || image.type === 'image/jpeg')) {
-      return setContent({
-        ...content,
-        imageList: [
-          ...imageList.slice(0, index),
-          image,
-          ...imageList.slice(index + 1),
-        ],
-      });
+      return setImageList([
+        ...imageList.slice(0, index),
+        image,
+        ...imageList.slice(index + 1),
+      ]);
     } else {
       window.alert('Please select images with only jpg, jpeg or png formats');
       document.getElementById(`imageListInput${index}`).value = null;
@@ -388,8 +385,9 @@ const CreateContent = (props) => {
     }
   };
   useEffect(() => {
-    console.log('content', content);
-  }, [content]);
+    // console.log('content', content);
+    // console.log('imageList', imageList);
+  }, [content, imageList]);
 
   const clearForm = () => {
     setContent({
@@ -399,12 +397,12 @@ const CreateContent = (props) => {
       type: 1,
       description: '',
       thumbnail: {},
-      mainImage: {},
+      mainImage: '',
       imageList: [],
       videoUrl: '',
       orderNo: 0,
     });
-    setImageListInputs(['']);
+    setImageList(['']);
 
     setValidators({
       ...validators,
@@ -429,10 +427,7 @@ const CreateContent = (props) => {
   };
 
   const removeFromImageList = (index) => {
-    setImageListInputs([
-      ...imageListInputs.slice(0, index),
-      ...imageListInputs.slice(index + 1),
-    ]);
+    setImageList([...imageList.slice(0, index), ...imageList.slice(index + 1)]);
     // setContent({
     //   ...content,
     //   imageList: [...imageList.slice(0, index), ...imageList.slice(index + 1)],
@@ -440,12 +435,12 @@ const CreateContent = (props) => {
   };
 
   const addToImageList = () => {
-    setImageListInputs([[...imageListInputs, '']]);
+    setImageList([...imageList, '']);
     // setContent({
     //   ...content,
     //   imageList: [...imageList, ''],
     // });
-    console.log('imageListInputButtons After', imageListInputs);
+    console.log('imageListInputButtons After', imageList);
   };
   const onInput = (e) => {
     if (e.target.name === 'type' || e.target.name === 'orderNo') {
@@ -713,7 +708,7 @@ const CreateContent = (props) => {
                               }}
                             />
                             <p>
-                              {imageList[index].name
+                              {imageList[index]
                                 ? imageList[index].name
                                 : '***Select Image***'}
                             </p>
