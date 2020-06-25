@@ -68,7 +68,7 @@ export const styles = (theme) => ({
   logoXs: {
     padding: '10px',
     margin: 'auto 2%',
-    width: 40,
+    width: 50,
   },
   logoSmUp: {
     objectFit: 'contain',
@@ -89,6 +89,9 @@ export const styles = (theme) => ({
     marginTop: '5%',
   },
   companyNameXs: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+
     padding: '10px',
     textAlign: 'center',
     backgroundColor: '#202123',

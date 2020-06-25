@@ -45,33 +45,42 @@ const CreateContent = (props) => {
   }
   const classes = useStyles();
 
-  const [title, setTitle] = useState('');
-  const [subtitle, setSubtitle] = useState('');
-  const [type, setType] = useState(1);
-  const [description, setDescription] = useState('');
-  const [errors, setErrors] = useState({});
-  const [videoUrl, setVideoUrl] = useState('');
-  const [orderNo, setOrderNo] = useState(0);
-  const [contentId, setContentId] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [isSuccessfull, setIsSuccessfull] = useState(false);
-  const [isFailed, setIsFailed] = useState(false);
-
-  const [thumbnail, setThumbnail] = useState({});
-  const [mainImage, setMainImage] = useState({});
-  const [imageList, setImageList] = useState(['']);
-
-  let contentData = {
-    title: title,
-    subtitle: subtitle,
-    type: type,
-    description: description,
-    thumbnail: '',
-    mainImage: '',
+  const [content, setContent] = useState({
+    title: '',
+    subtitle: '',
+    type: 1,
+    description: '',
+    thumbnail: {},
+    mainImage: {},
     imageList: [],
-    videoUrl: videoUrl,
-    orderNo: orderNo,
-  };
+    videoUrl: '',
+    orderNo: 0,
+  });
+
+  const [imageListInputs, setImageListInputs] = useState(['']);
+
+  const [validators, setValidators] = useState({
+    errors: {},
+    loading: false,
+    isSuccessfull: false,
+    isFailed: false,
+  });
+
+  const {
+    title,
+    subtitle,
+    type,
+    description,
+    thumbnail,
+    mainImage,
+    imageList,
+    videoUrl,
+    orderNo,
+  } = content;
+
+  const { errors, loading, isSuccessfull, isFailed } = validators;
+
+  const [contentId, setContentId] = useState('');
 
   const imageUploader = async (file, uploadType, index, contentIdReturned) => {
     // let reader = new FileReader();
@@ -115,7 +124,7 @@ const CreateContent = (props) => {
     const image = event.target.files[0];
 
     if (image && (image.type === 'image/png' || image.type === 'image/jpeg')) {
-      return setThumbnail({ image: image });
+      return setContent({ ...content, thumbnail: { image: image } });
     } else {
       window.alert('Please select images only in jpg, jpeg or png extensions');
       document.getElementById('thumbnailInput').value = null;
@@ -126,7 +135,7 @@ const CreateContent = (props) => {
     const image = event.target.files[0];
 
     if (image && (image.type === 'image/png' || image.type === 'image/jpeg')) {
-      return setMainImage({ image: image });
+      return setContent({ ...content, mainImage: { image: image } });
     } else {
       window.alert('Please select images only in jpg, jpeg or png extensions');
       document.getElementById('mainImageInput').value = null;
@@ -137,11 +146,14 @@ const CreateContent = (props) => {
     const image = event.target.files[0];
 
     if (image && (image.type === 'image/png' || image.type === 'image/jpeg')) {
-      return setImageList([
-        ...imageList.slice(0, index),
-        image,
-        ...imageList.slice(index + 1),
-      ]);
+      return setContent({
+        ...content,
+        imageList: [
+          ...imageList.slice(0, index),
+          image,
+          ...imageList.slice(index + 1),
+        ],
+      });
     } else {
       window.alert('Please select images with only jpg, jpeg or png formats');
       document.getElementById(`imageListInput${index}`).value = null;
@@ -150,42 +162,52 @@ const CreateContent = (props) => {
 
   const failContentUpload = (err) => {
     DeleteContentData(contentId);
-    setLoading(false);
-    setErrors(err);
+    setValidators({
+      ...validators,
+      loading: false,
+      errors: err,
+      isSuccessfull: false,
+      isFailed: false,
+    });
     console.log('fail content upload', err);
-    setIsSuccessfull(false);
-    setIsFailed(true);
   };
 
   // app.post('/image/:contentId/:imageType/:imageFileName/:imageExtension/:index',
-  const postContentLinks = (
+  const postContentLinks = async (
     contentId,
     imageType,
     imageFileName,
     imageExtension,
     index,
   ) => {
-    return axios
-      .post(
+    try {
+      const res = await axios.post(
         `/image/${contentId}/${imageType}/${imageFileName}/${imageExtension}/${index}`,
-      )
-      .then((res) => {
-        console.log('content link for ' + imageType + ' updated', res);
-        return res;
-      })
-      .catch((err) => {
-        console.log(
-          'content link for ' + imageType + ' could not be updated',
-          err,
-        );
-      });
+      );
+      console.log(
+        'serafettin ',
+        `/image/${contentId}/${imageType}/${imageFileName}/${imageExtension}/${index}`,
+      );
+      console.log('content link for ' + imageType + ' updated', res);
+      return res;
+    } catch (err) {
+      console.log(
+        'content link for ' + imageType + ' could not be updated',
+        err,
+      );
+    }
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setLoading(true);
+    setValidators({
+      ...validators,
+      loading: true,
+    });
 
-    const postContentData = axios.post('/content', contentData).then((res) => {
+    // setLoading(true);
+
+    const postContentData = axios.post('/content', content).then((res) => {
       setContentId(res.data.content.contentId);
       return res.data.content.contentId;
     });
@@ -204,7 +226,10 @@ const CreateContent = (props) => {
               );
             } catch (error) {
               console.log('error in thumbnail upload', error);
-              setIsFailed(true);
+              setValidators({
+                ...validators,
+                isFailed: true,
+              });
             }
           })
           .then((contentIdReturned) => {
@@ -217,7 +242,10 @@ const CreateContent = (props) => {
               );
             } catch (error) {
               console.log('error in main Image upload', error);
-              return setIsFailed(true);
+              return setValidators({
+                ...validators,
+                isFailed: true,
+              });
             }
           })
           .then((contentIdReturned) => {
@@ -232,20 +260,30 @@ const CreateContent = (props) => {
                   );
                 } catch (error) {
                   console.log('error in imageList upload', error);
-                  setIsFailed(true);
+                  setValidators({
+                    ...validators,
+                    isFailed: true,
+                  });
                 }
               }
             }
             return contentIdReturned;
           })
           .then(() => {
-            setIsSuccessfull(!isFailed);
-            setLoading(false);
+            setValidators({
+              ...validators,
+              loading: false,
+              isSuccessfull: !isFailed,
+            });
+
             console.log('submit successfull');
           })
           .catch((err) => {
-            setIsSuccessfull(!isFailed);
-            setLoading(false);
+            setValidators({
+              ...validators,
+              loading: false,
+              isSuccessfull: !isFailed,
+            });
             console.log('submit failed');
 
             return failContentUpload(err);
@@ -263,7 +301,11 @@ const CreateContent = (props) => {
               );
             } catch (error) {
               console.log('error in thumbnail upload', error);
-              setIsFailed(true);
+              setValidators({
+                ...validators,
+                loading: false,
+                isFailed: true,
+              });
             }
           })
           .then((contentIdReturned) => {
@@ -276,18 +318,27 @@ const CreateContent = (props) => {
               );
             } catch (error) {
               console.log('error in main Image upload', error);
-              setIsFailed(true);
+              setValidators({
+                ...validators,
+                loading: false,
+                isFailed: true,
+              });
             }
           })
           .then(() => {
-            setIsSuccessfull(!isFailed);
-
-            setLoading(false);
+            setValidators({
+              ...validators,
+              loading: false,
+              isSuccessfull: !isFailed,
+            });
             console.log('submit successfull');
           })
           .catch((err) => {
-            setIsSuccessfull(!isFailed);
-            setLoading(false);
+            setValidators({
+              ...validators,
+              loading: false,
+              isSuccessfull: !isFailed,
+            });
             console.log('submit failed');
             return failContentUpload(err);
           });
@@ -307,18 +358,28 @@ const CreateContent = (props) => {
               );
             } catch (error) {
               console.log('error in thumbnail upload', error);
-              return setIsFailed(true);
+              return setValidators({
+                ...validators,
+                loading: false,
+                isFailed: true,
+              });
             }
           })
           .then(() => {
             console.log('submit successfull');
-            setIsSuccessfull(!isFailed);
-            setLoading(false);
+            setValidators({
+              ...validators,
+              loading: false,
+              isSuccessfull: !isFailed,
+            });
           })
           .catch((err) => {
             console.log('submit failed');
-            setLoading(false);
-            setIsSuccessfull(!isFailed);
+            setValidators({
+              ...validators,
+              loading: false,
+              isSuccessfull: !isFailed,
+            });
             return failContentUpload(err);
           });
       }
@@ -326,32 +387,34 @@ const CreateContent = (props) => {
       window.alert('Session expired. Login again');
     }
   };
-  useEffect(() => {}, [
-    type,
-    contentData,
-    loading,
-    thumbnail,
-    imageList,
-    mainImage,
-    isSuccessfull,
-    isFailed,
-  ]);
+  useEffect(() => {
+    console.log('content', content);
+  }, [content]);
 
   const clearForm = () => {
-    setTitle('');
-    setSubtitle('');
-    setType(1);
-    setDescription('');
-    setThumbnail({});
-    setMainImage({});
-    setImageList([]);
-    setVideoUrl('');
-    setOrderNo(0);
-    setErrors({});
+    setContent({
+      ...content,
+      title: '',
+      subtitle: '',
+      type: 1,
+      description: '',
+      thumbnail: {},
+      mainImage: {},
+      imageList: [],
+      videoUrl: '',
+      orderNo: 0,
+    });
+    setImageListInputs(['']);
+
+    setValidators({
+      ...validators,
+      errors: {},
+      loading: false,
+      isSuccessfull: false,
+      isFailed: false,
+    });
     setContentId('');
-    setLoading(false);
-    setIsSuccessfull(false);
-    setIsFailed(false);
+
     if (!!document.getElementById('thumbnailInput'))
       document.getElementById('thumbnailInput').value = null;
     if (!!document.getElementById('mainImageInput'))
@@ -366,12 +429,36 @@ const CreateContent = (props) => {
   };
 
   const removeFromImageList = (index) => {
-    setImageList([...imageList.slice(0, index), ...imageList.slice(index + 1)]);
+    setImageListInputs([
+      ...imageListInputs.slice(0, index),
+      ...imageListInputs.slice(index + 1),
+    ]);
+    // setContent({
+    //   ...content,
+    //   imageList: [...imageList.slice(0, index), ...imageList.slice(index + 1)],
+    // });
   };
 
   const addToImageList = () => {
-    setImageList([...imageList, '']);
-    console.log('imageListInputButtons After', imageList);
+    setImageListInputs([[...imageListInputs, '']]);
+    // setContent({
+    //   ...content,
+    //   imageList: [...imageList, ''],
+    // });
+    console.log('imageListInputButtons After', imageListInputs);
+  };
+  const onInput = (e) => {
+    if (e.target.name === 'type' || e.target.name === 'orderNo') {
+      setContent({
+        ...content,
+        [e.target.name]: Number(e.target.value),
+      });
+    } else {
+      setContent({
+        ...content,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   return (
@@ -405,7 +492,7 @@ const CreateContent = (props) => {
                     error={errors.title ? true : false}
                     value={title}
                     required
-                    onInput={(event) => setTitle(event.target.value)}
+                    onInput={onInput}
                     fullWidth
                   />
 
@@ -418,7 +505,7 @@ const CreateContent = (props) => {
                     helperText={errors.subtitle}
                     error={errors.subtitle ? true : false}
                     value={subtitle}
-                    onChange={(event) => setSubtitle(event.target.value)}
+                    onChange={onInput}
                     fullWidth
                   />
 
@@ -433,7 +520,7 @@ const CreateContent = (props) => {
                     helperText={errors.description}
                     error={errors.description ? true : false}
                     value={description}
-                    onChange={(event) => setDescription(event.target.value)}
+                    onChange={onInput}
                     fullWidth
                   />
 
@@ -447,7 +534,7 @@ const CreateContent = (props) => {
                     error={errors.orderNo ? true : false}
                     helperText="Content will be sorted by the Displaying priority. Higher number means higher priority. When the priority matches another content's priority, the content created later will have higher priority."
                     value={orderNo}
-                    onChange={(event) => setOrderNo(Number(event.target.value))}
+                    onChange={onInput}
                     fullWidth
                   />
 
@@ -471,11 +558,9 @@ const CreateContent = (props) => {
                       <FormLabel component='legend'>Content Type</FormLabel>
                       <RadioGroup
                         aria-label='contentType'
-                        name='contentType'
+                        name='type'
                         value={type}
-                        onChange={(event) =>
-                          setType(Number(event.target.value))
-                        }>
+                        onChange={onInput}>
                         <FormControlLabel
                           value={1}
                           control={<Radio />}
@@ -503,7 +588,7 @@ const CreateContent = (props) => {
                       helperText={errors.videoUrl}
                       error={errors.videoUrl ? true : false}
                       value={videoUrl}
-                      onChange={(event) => setVideoUrl(event.target.value)}
+                      onChange={onInput}
                       fullWidth
                       required
                     />
@@ -687,9 +772,12 @@ const CreateContent = (props) => {
         open={loading || isSuccessfull || isFailed}
         keepMounted
         onClose={() => {
-          setIsSuccessfull(false);
-          setIsFailed(false);
-          setLoading(false);
+          setValidators({
+            ...validators,
+            isSuccessfull: false,
+            isFailed: false,
+            loading: false,
+          });
         }}
         aria-labelledby='alert-dialog-slide-title'
         aria-describedby='alert-dialog-slide-description'>
