@@ -140,13 +140,19 @@ function Navigation(props) {
           <i className='fa fa-youtube-play fa-2x'></i>
         </a>
         <a
-          href='https://www.behance.com'
+          href='https://www.instagram.com/alaska.media/'
           target='_blank'
           rel='noopener noreferrer'>
-          <i className='fab fa-behance fa-2x'></i>
+          <i className='fab fa-instagram fa-2x'></i>
         </a>
         <a
-          href='https://www.facebook.com'
+          href='https://twitter.com/MediaAlaska'
+          target='_blank'
+          rel='noopener noreferrer'>
+          <i className='fab fa-twitter fa-2x'></i>
+        </a>
+        <a
+          href='https://www.facebook.com/cihan.taskin.904'
           target='_blank'
           rel='noopener noreferrer'>
           <i className='fab fa-facebook fa-2x'></i>

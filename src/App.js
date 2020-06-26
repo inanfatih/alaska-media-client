@@ -49,7 +49,8 @@ function App() {
               <Route exact path='/login' component={Login} />
               <Route exact path='/missions-visions' component={MisionVision} />
               <Route exact path='/videos' component={Videos} />
-              <Route exact path='/social-media' component={SocialMedia} />
+              {/* <Route exact path='/social-media' component={SocialMedia} /> ------------ */}
+              <Route exact path='/social-media' component={Home} />
               <Route exact path='/contact' component={Contact} />
               <Route exact path='/edit-content' component={EditContent} />
               <Route exact path='/content/:contentId' component={Content} />
