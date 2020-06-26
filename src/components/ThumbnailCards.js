@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
 const ThumbnailCards = ({ dataPath }) => {
   const contentContext = useContext(ContentContext);
 
-  const { getContent, loading, content, error } = contentContext;
+  const { getContent, loading, content } = contentContext;
 
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   useEffect(
     () => {

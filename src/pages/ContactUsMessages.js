@@ -1,27 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 
 import axios from 'axios';
-//MUI
-import { makeStyles } from '@material-ui/core/styles';
 //Files
 import '../App.css';
 import IsAuthenticated from '../util/IsAuthenticated';
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: theme.spacing(0),
-  },
-}));
 
 export default function ContactUsMessages(props) {
   if (!IsAuthenticated()) {
     props.history.push('/login');
   }
-  const classes = useStyles();
 
-  const [state, setState] = React.useState([]);
+  const [state, setState] = useState([]);
 
   const columns = [
     { title: 'Name', field: 'name' },
@@ -44,7 +34,7 @@ export default function ContactUsMessages(props) {
     },
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios
       .get('/contact')
       .then((res) => {
@@ -64,7 +54,7 @@ export default function ContactUsMessages(props) {
         title='Messages'
         columns={columns}
         data={state}
-        style={{ margin: '3% 4%', padding: '1%' }}
+        style={{ margin: '4% 4% 0% 4%', padding: '1% 0% 1% 0%' }}
         editable={{
           onRowDelete: async (oldData) => {
             IsAuthenticated();

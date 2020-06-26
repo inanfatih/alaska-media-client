@@ -2,24 +2,14 @@ import React from 'react';
 import MaterialTable from 'material-table';
 
 import axios from 'axios';
-//MUI
-import { makeStyles } from '@material-ui/core/styles';
 //Files
 import '../App.css';
 import IsAuthenticated from '../util/IsAuthenticated';
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: theme.spacing(0),
-  },
-}));
 
 export default function EditContent(props) {
   if (!IsAuthenticated()) {
     props.history.push('/login');
   }
-  const classes = useStyles();
 
   const [state, setState] = React.useState([]);
 

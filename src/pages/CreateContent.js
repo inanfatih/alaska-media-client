@@ -73,7 +73,6 @@ const CreateContent = (props) => {
     description,
     thumbnail,
     mainImage,
-
     videoUrl,
     orderNo,
   } = content;
@@ -181,10 +180,6 @@ const CreateContent = (props) => {
       const res = await axios.post(
         `/image/${contentId}/${imageType}/${imageFileName}/${imageExtension}/${index}`,
       );
-      console.log(
-        'serafettin ',
-        `/image/${contentId}/${imageType}/${imageFileName}/${imageExtension}/${index}`,
-      );
       console.log('content link for ' + imageType + ' updated', res);
       return res;
     } catch (err) {
@@ -196,40 +191,38 @@ const CreateContent = (props) => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!thumbnail.image) {
+      window.alert('Please select a Thumbnail image');
+    } else if (IsAuthenticated()) {
+      setValidators({
+        ...validators,
+        loading: true,
+      });
 
-    setValidators({
-      ...validators,
-      loading: true,
-    });
-
-    // setLoading(true);
-
-    const postContentData = axios.post('/content', content).then((res) => {
-      setContentId(res.data.content.contentId);
-      return res.data.content.contentId;
-    });
-
-    if (IsAuthenticated()) {
-      if (type === 2) {
-        postContentData
-          .then((contentIdReturned) => {
-            setContentId(contentIdReturned);
-            try {
-              return imageUploader(
-                thumbnail.image,
-                'thumbnail',
-                0,
-                contentIdReturned,
-              );
-            } catch (error) {
-              console.log('error in thumbnail upload', error);
-              setValidators({
-                ...validators,
-                isFailed: true,
-              });
-            }
-          })
-          .then((contentIdReturned) => {
+      axios
+        .post('/content', content)
+        .then((res) => {
+          setContentId(res.data.content.contentId);
+          return res.data.content.contentId;
+        })
+        .then((contentIdReturned) => {
+          try {
+            return imageUploader(
+              thumbnail.image,
+              'thumbnail',
+              0,
+              contentIdReturned,
+            );
+          } catch (error) {
+            console.log('error in thumbnail upload', error);
+            setValidators({
+              ...validators,
+              isFailed: true,
+            });
+          }
+        })
+        .then((contentIdReturned) => {
+          if (mainImage.image) {
             try {
               return imageUploader(
                 mainImage.image,
@@ -244,142 +237,48 @@ const CreateContent = (props) => {
                 isFailed: true,
               });
             }
-          })
-          .then((contentIdReturned) => {
-            for (const key in imageList) {
-              if (imageList[key] !== '') {
-                try {
-                  imageUploader(
-                    imageList[key],
-                    'imageList',
-                    key,
-                    contentIdReturned,
-                  );
-                } catch (error) {
-                  console.log('error in imageList upload', error);
-                  setValidators({
-                    ...validators,
-                    isFailed: true,
-                  });
-                }
+          }
+        })
+        .then((contentIdReturned) => {
+          for (const key in imageList) {
+            if (imageList[key] !== '') {
+              try {
+                imageUploader(
+                  imageList[key],
+                  'imageList',
+                  key,
+                  contentIdReturned,
+                );
+              } catch (error) {
+                console.log('error in imageList upload', error);
+                setValidators({
+                  ...validators,
+                  isFailed: true,
+                });
               }
             }
-            return contentIdReturned;
-          })
-          .then(() => {
-            setValidators({
-              ...validators,
-              loading: false,
-              isSuccessfull: !isFailed,
-            });
-
-            console.log('submit successfull');
-          })
-          .catch((err) => {
-            setValidators({
-              ...validators,
-              loading: false,
-              isSuccessfull: !isFailed,
-            });
-            console.log('submit failed');
-
-            return failContentUpload(err);
+          }
+          return contentIdReturned;
+        })
+        .then(() => {
+          setValidators({
+            ...validators,
+            loading: false,
+            isSuccessfull: !isFailed,
           });
-      } else if (type === 1) {
-        postContentData
-          .then((contentIdReturned) => {
-            setContentId(contentIdReturned);
-            try {
-              return imageUploader(
-                thumbnail.image,
-                'thumbnail',
-                0,
-                contentIdReturned,
-              );
-            } catch (error) {
-              console.log('error in thumbnail upload', error);
-              setValidators({
-                ...validators,
-                loading: false,
-                isFailed: true,
-              });
-            }
-          })
-          .then((contentIdReturned) => {
-            try {
-              return imageUploader(
-                mainImage.image,
-                'mainImage',
-                0,
-                contentIdReturned,
-              );
-            } catch (error) {
-              console.log('error in main Image upload', error);
-              setValidators({
-                ...validators,
-                loading: false,
-                isFailed: true,
-              });
-            }
-          })
-          .then(() => {
-            setValidators({
-              ...validators,
-              loading: false,
-              isSuccessfull: !isFailed,
-            });
-            console.log('submit successfull');
-          })
-          .catch((err) => {
-            setValidators({
-              ...validators,
-              loading: false,
-              isSuccessfull: !isFailed,
-            });
-            console.log('submit failed');
-            return failContentUpload(err);
-          });
-      } else if (type === 3) {
-        postContentData
-          .then(async (contentIdReturned) => {
-            console.log('postcontentdata passed ');
-            setContentId(contentIdReturned);
-            try {
-              console.log('at image uploader ');
 
-              return await imageUploader(
-                thumbnail.image,
-                'thumbnail',
-                0,
-                contentIdReturned,
-              );
-            } catch (error) {
-              console.log('error in thumbnail upload', error);
-              return setValidators({
-                ...validators,
-                loading: false,
-                isFailed: true,
-              });
-            }
-          })
-          .then(() => {
-            console.log('submit successfull');
-            setValidators({
-              ...validators,
-              loading: false,
-              isSuccessfull: !isFailed,
-            });
-          })
-          .catch((err) => {
-            console.log('submit failed');
-            setValidators({
-              ...validators,
-              loading: false,
-              isSuccessfull: !isFailed,
-            });
-            return failContentUpload(err);
+          console.log('submit successfull');
+        })
+        .catch((err) => {
+          setValidators({
+            ...validators,
+            loading: false,
+            isSuccessfull: !isFailed,
           });
-      }
+          console.log('submit failed');
+
+          return failContentUpload(err);
+        });
     } else {
       window.alert('Session expired. Login again');
     }
@@ -428,19 +327,10 @@ const CreateContent = (props) => {
 
   const removeFromImageList = (index) => {
     setImageList([...imageList.slice(0, index), ...imageList.slice(index + 1)]);
-    // setContent({
-    //   ...content,
-    //   imageList: [...imageList.slice(0, index), ...imageList.slice(index + 1)],
-    // });
   };
 
   const addToImageList = () => {
     setImageList([...imageList, '']);
-    // setContent({
-    //   ...content,
-    //   imageList: [...imageList, ''],
-    // });
-    console.log('imageListInputButtons After', imageList);
   };
   const onInput = (e) => {
     if (e.target.name === 'type' || e.target.name === 'orderNo') {
@@ -477,7 +367,6 @@ const CreateContent = (props) => {
                     }}>
                     Create Content
                   </Typography>
-
                   <TextField
                     id='title'
                     name='title'
@@ -490,7 +379,6 @@ const CreateContent = (props) => {
                     onInput={onInput}
                     fullWidth
                   />
-
                   <TextField
                     id='subtitle'
                     name='subtitle'
@@ -503,7 +391,6 @@ const CreateContent = (props) => {
                     onChange={onInput}
                     fullWidth
                   />
-
                   <TextField
                     id='outlined-multiline-static'
                     name='description'
@@ -518,7 +405,6 @@ const CreateContent = (props) => {
                     onChange={onInput}
                     fullWidth
                   />
-
                   <TextField
                     id='orderNo'
                     name='orderNo'
@@ -532,7 +418,6 @@ const CreateContent = (props) => {
                     onChange={onInput}
                     fullWidth
                   />
-
                   <div
                     style={{
                       marginBottom: '2%',
@@ -574,21 +459,17 @@ const CreateContent = (props) => {
                       </RadioGroup>
                     </FormControl>
                   </div>
-                  {type === 3 && (
-                    <TextField
-                      id='videoUrl'
-                      name='videoUrl'
-                      label='Video Url'
-                      variant='outlined'
-                      helperText={errors.videoUrl}
-                      error={errors.videoUrl ? true : false}
-                      value={videoUrl}
-                      onChange={onInput}
-                      fullWidth
-                      required
-                    />
-                  )}
-
+                  <TextField
+                    id='videoUrl'
+                    name='videoUrl'
+                    label='Video Url'
+                    variant='outlined'
+                    helperText={errors.videoUrl}
+                    error={errors.videoUrl ? true : false}
+                    value={videoUrl}
+                    onChange={onInput}
+                    fullWidth
+                  />
                   <div
                     style={{
                       margin: '3% 2%',
@@ -617,7 +498,6 @@ const CreateContent = (props) => {
                           type='file'
                           accept='image/*'
                           style={{ display: 'none' }}
-                          required
                           onChange={uploadThumbnail}
                         />
 
@@ -629,104 +509,96 @@ const CreateContent = (props) => {
                       </Button>
                     </div>
                   </div>
-
-                  {type !== 3 && (
+                  <div
+                    style={{
+                      margin: '3% 2%',
+                      width: '91%',
+                      border: '1px solid #C4C4C4',
+                      borderRadius: '4px',
+                      padding: '2%',
+                      color: 'grey',
+                    }}>
                     <div
                       style={{
-                        margin: '3% 2%',
-                        width: '91%',
-                        border: '1px solid #C4C4C4',
-                        borderRadius: '4px',
-                        padding: '2%',
-                        color: 'grey',
+                        marginBottom: '1%',
                       }}>
-                      <div
-                        style={{
-                          marginBottom: '1%',
-                        }}>
-                        Upload Main Image (The image to be displayed on the top
-                        in the content page) for 2D & 3D or Social Media
-                      </div>
+                      Upload Main Image (The image to be displayed on the top in
+                      the content page or under the video)
+                    </div>
 
+                    <div
+                      style={{
+                        marginBottom: '1%',
+                      }}>
+                      <Button variant='contained' component='label'>
+                        <BackupIcon style={{ marginRight: '1rem' }} />
+
+                        <input
+                          id='mainImageInput'
+                          type='file'
+                          style={{ display: 'none' }}
+                          accept='image/*'
+                          onChange={uploadMainImage}
+                        />
+                        <p>
+                          {Object.keys(mainImage).length !== 0
+                            ? mainImage.image.name
+                            : '***Select Image***'}
+                        </p>
+                      </Button>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      margin: '3% 2%',
+                      width: '91%',
+                      border: '1px solid #C4C4C4',
+                      borderRadius: '4px',
+                      padding: '2%',
+                      color: 'grey',
+                    }}>
+                    <div
+                      style={{
+                        marginBottom: '1%',
+                      }}>
+                      Upload additional images. These images will be displayed
+                      under the main image
+                    </div>
+                    {imageList.map((item, index) => (
                       <div
                         style={{
                           marginBottom: '1%',
-                        }}>
+                        }}
+                        key={index}>
                         <Button variant='contained' component='label'>
                           <BackupIcon style={{ marginRight: '1rem' }} />
-
                           <input
-                            id='mainImageInput'
+                            id={`imageListInput${index}`}
                             type='file'
-                            style={{ display: 'none' }}
                             accept='image/*'
-                            required
-                            onChange={uploadMainImage}
+                            style={{ display: 'none' }}
+                            onChange={(event) => {
+                              uploadImageList(event, index);
+                            }}
                           />
                           <p>
-                            {Object.keys(mainImage).length !== 0
-                              ? mainImage.image.name
+                            {imageList[index]
+                              ? imageList[index].name
                               : '***Select Image***'}
                           </p>
                         </Button>
+                        <Button>
+                          <RemoveCircleIcon
+                            onClick={() => removeFromImageList(index)}
+                          />
+                        </Button>
                       </div>
-                    </div>
-                  )}
+                    ))}
 
-                  {type === 2 && (
-                    <div
-                      style={{
-                        margin: '3% 2%',
-                        width: '91%',
-                        border: '1px solid #C4C4C4',
-                        borderRadius: '4px',
-                        padding: '2%',
-                        color: 'grey',
-                      }}>
-                      <div
-                        style={{
-                          marginBottom: '1%',
-                        }}>
-                        Upload additional images for 2D & 3D (These will be
-                        displayed after the main image)
-                      </div>
-                      {imageList.map((item, index) => (
-                        <div
-                          style={{
-                            marginBottom: '1%',
-                          }}
-                          key={index}>
-                          <Button variant='contained' component='label'>
-                            <BackupIcon style={{ marginRight: '1rem' }} />
-                            <input
-                              id={`imageListInput${index}`}
-                              type='file'
-                              accept='image/*'
-                              style={{ display: 'none' }}
-                              onChange={(event) => {
-                                uploadImageList(event, index);
-                              }}
-                            />
-                            <p>
-                              {imageList[index]
-                                ? imageList[index].name
-                                : '***Select Image***'}
-                            </p>
-                          </Button>
-                          <Button>
-                            <RemoveCircleIcon
-                              onClick={() => removeFromImageList(index)}
-                            />
-                          </Button>
-                        </div>
-                      ))}
-
-                      <Button onClick={addToImageList}>
-                        Add more images <AddCircleIcon />
-                      </Button>
-                    </div>
-                  )}
-
+                    <Button onClick={addToImageList}>
+                      Add more images <AddCircleIcon />
+                    </Button>
+                  </div>
                   <Button
                     size='large'
                     type='submit'
@@ -746,7 +618,6 @@ const CreateContent = (props) => {
                       'Create Content'
                     )}
                   </Button>
-
                   <Button
                     size='large'
                     variant='contained'

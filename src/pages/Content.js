@@ -59,156 +59,35 @@ export default function Content(props) {
       });
   }, [contentId]);
 
-  const videoMarkup = (
-    <Grow in timeout={500}>
-      <div className={classes.imageContentBox}>
-        <Card className={classes.mediaRoot} elevation={5}>
-          <CardActionArea disableTouchRipple>
-            <div className='player-wrapper'>
-              <ReactPlayer
-                url={contentPage.videoUrl}
-                controls={true}
-                width='100%'
-                height='100%'
-                className='react-player'
-              />
-            </div>
-            <CardContent>
-              <Typography gutterBottom style={{ fontSize: '2.5em' }}>
-                {contentPage.title}
-              </Typography>
-              <Typography gutterBottom variant='h5'>
-                {contentPage.subtitle}
-              </Typography>
-              <p className='with-newlines' style={{ fontSize: '1.2em' }}>
-                {contentPage.description}
-              </p>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Link to='/contact'>
-              <Button size='small' color='primary'>
-                Learn More
-              </Button>
-            </Link>
-          </CardActions>
-        </Card>
-      </div>
-    </Grow>
-  );
-
-  const socialMediaMarkup = (
-    <div>
-      <Grow in timeout={500}>
-        <div className={classes.imageContentBox}>
-          <Card className={classes.mediaRoot} elevation={5}>
-            <CardActionArea
-              style={{
-                cursor: 'default',
-              }}>
-              <CardMedia
-                component='img'
-                className={classes.cardMedia}
-                image={contentPage.mainImage}
-                title={contentPage.title}
-                onClick={() => {
-                  setPhotoIndex(0);
-                  setIsLightboxOpen(true);
-                }}
-              />
-              <CardContent>
-                <Typography gutterBottom style={{ fontSize: '2.5em' }}>
-                  {contentPage.title}
-                </Typography>
-                <Typography gutterBottom variant='h5'>
-                  {contentPage.subtitle}
-                </Typography>
-                <p className='with-newlines' style={{ fontSize: '1.2em' }}>
-                  {contentPage.description}
-                </p>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Link to='/contact'>
-                <Button size='small' color='primary'>
-                  Learn More
-                </Button>
-              </Link>
-            </CardActions>
-          </Card>
-          {images.map((imageLink, index) => (
-            <Card key={index} className={classes.mediaRoot} elevation={5}>
-              <CardMedia
-                component='img'
-                className={classes.cardMedia}
-                image={imageLink}
-              />
-            </Card>
-          ))}
-        </div>
-      </Grow>
-      {isLigtboxOpen && (
-        <Lightbox
-          mainSrc={lightboxImageList[photoIndex]}
-          onCloseRequest={() => setIsLightboxOpen(false)}
-          nextSrc={
-            lightboxImageList[(photoIndex + 1) % lightboxImageList.length]
-          }
-          prevSrc={
-            lightboxImageList[
-              (photoIndex + lightboxImageList.length - 1) %
-                lightboxImageList.length
-            ]
-          }
-          onMovePrevRequest={() =>
-            setPhotoIndex(
-              (photoIndex + lightboxImageList.length - 1) %
-                lightboxImageList.length,
-            )
-          }
-          onMoveNextRequest={() =>
-            setPhotoIndex(
-              (photoIndex + lightboxImageList.length + 1) %
-                lightboxImageList.length,
-            )
-          }
-        />
-      )}
-    </div>
-  );
-
-  const twoDthreeDMarkup = (
+  const markup = (
     <div>
       <Grow in timeout={500}>
         <div className={classes.imageContentBox}>
           <div style={{ background: 'white' }}>
-            <Card className={classes.mediaRoot}>
-              <CardActionArea
-                style={{
-                  cursor: 'default',
-                }}>
-                <CardMedia
-                  borderRadius='0px'
-                  component='img'
-                  className={classes.cardMedia}
-                  image={contentPage.mainImage}
-                  title={contentPage.title}
-                  onClick={() => {
-                    setPhotoIndex(0);
-                    setIsLightboxOpen(true);
-                  }}
-                />
-                <CardContent>
-                  <Typography gutterBottom style={{ fontSize: '2.5em' }}>
-                    {contentPage.title}
-                  </Typography>
-                  <Typography gutterBottom variant='h5'>
-                    {contentPage.subtitle}
-                  </Typography>
-                  <p className='with-newlines' style={{ fontSize: '1.2em' }}>
-                    {contentPage.description}
-                  </p>
-                </CardContent>
+            {contentPage.videoUrl !== '' ? (
+              <Card className={classes.mediaRoot} elevation={5}>
+                <CardActionArea disableTouchRipple>
+                  <div className='player-wrapper'>
+                    <ReactPlayer
+                      url={contentPage.videoUrl}
+                      controls={true}
+                      width='100%'
+                      height='100%'
+                      className='react-player'
+                    />
+                  </div>
+                  <CardContent>
+                    <Typography gutterBottom style={{ fontSize: '2.5em' }}>
+                      {contentPage.title}
+                    </Typography>
+                    <Typography gutterBottom variant='h5'>
+                      {contentPage.subtitle}
+                    </Typography>
+                    <p className='with-newlines' style={{ fontSize: '1.2em' }}>
+                      {contentPage.description}
+                    </p>
+                  </CardContent>
+                </CardActionArea>
                 <CardActions>
                   <Link to='/contact'>
                     <Button size='small' color='primary'>
@@ -216,21 +95,81 @@ export default function Content(props) {
                     </Button>
                   </Link>
                 </CardActions>
-              </CardActionArea>
-            </Card>
-            {images.map((imageLink, index) => (
-              <Card key={index} className={classes.mediaRoot}>
-                <CardMedia
-                  component='img'
-                  className={classes.cardMedia}
-                  image={imageLink}
-                  onClick={() => {
-                    setPhotoIndex(index + 1);
-                    setIsLightboxOpen(true);
-                  }}
-                />
+
+                <CardActionArea
+                  style={{
+                    cursor: 'default',
+                  }}>
+                  <CardMedia
+                    borderRadius='0px'
+                    component='img'
+                    className={classes.cardMedia}
+                    image={contentPage.mainImage}
+                    title={contentPage.title}
+                    onClick={() => {
+                      setPhotoIndex(0);
+                      setIsLightboxOpen(true);
+                    }}
+                  />
+                </CardActionArea>
               </Card>
-            ))}
+            ) : (
+              <Card className={classes.mediaRoot} elevation={5}>
+                <CardActionArea
+                  style={{
+                    cursor: 'default',
+                  }}>
+                  <CardMedia
+                    component='img'
+                    className={classes.cardMedia}
+                    image={
+                      contentPage.mainImage === ''
+                        ? contentPage.thumbnail
+                        : contentPage.mainImage
+                    }
+                    title={contentPage.title}
+                    onClick={() => {
+                      setPhotoIndex(0);
+                      setIsLightboxOpen(true);
+                    }}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom style={{ fontSize: '2.5em' }}>
+                      {contentPage.title}
+                    </Typography>
+                    <Typography gutterBottom variant='h5'>
+                      {contentPage.subtitle}
+                    </Typography>
+                    <p className='with-newlines' style={{ fontSize: '1.2em' }}>
+                      {contentPage.description}
+                    </p>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Link to='/contact'>
+                    <Button size='small' color='primary'>
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardActions>
+              </Card>
+            )}
+            {images.map(
+              (imageLink, index) =>
+                imageLink && (
+                  <Card key={index} className={classes.mediaRoot}>
+                    <CardMedia
+                      component='img'
+                      className={classes.cardMedia}
+                      image={imageLink}
+                      onClick={() => {
+                        setPhotoIndex(index + 1);
+                        setIsLightboxOpen(true);
+                      }}
+                    />
+                  </Card>
+                ),
+            )}
           </div>
         </div>
       </Grow>
@@ -264,13 +203,5 @@ export default function Content(props) {
     </div>
   );
 
-  return loading
-    ? loadingSipnner
-    : contentPage.type === 3
-    ? // Video content
-      videoMarkup
-    : //Social Media Content
-    contentPage.type === 1
-    ? socialMediaMarkup
-    : twoDthreeDMarkup;
+  return loading ? loadingSipnner : markup;
 }
