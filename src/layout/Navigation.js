@@ -43,7 +43,7 @@ function Navigation(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -132,41 +132,54 @@ function Navigation(props) {
       </List>
       <br />
 
-      <div className={classes.socialMediaIcons}>
-        <a
-          href='https://www.youtube.com/channel/UCD2hr0gq9pV8aDG1mO5JlAg'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <i className='fa fa-youtube-play fa-2x'></i>
-        </a>
-        <a
-          href='https://www.instagram.com/alaska.media/'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <i className='fab fa-instagram fa-2x'></i>
-        </a>
-        <a
-          href='https://twitter.com/MediaAlaska'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <i className='fab fa-twitter fa-2x'></i>
-        </a>
-        <a
-          href='https://www.facebook.com/cihan.taskin.904'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <i className='fab fa-facebook fa-2x'></i>
-        </a>
-      </div>
       <Link to='/login'>
         <Button
           style={{
             width: '100%',
             height: '30px',
             marginTop: '20px',
+            position: 'fixed',
+            bottom: '15%',
           }}
         />
       </Link>
+
+      <div className={classes.socialMediaIcons}>
+        <div style={{ position: 'fixed', bottom: '5%' }}>
+          <a
+            href='https://www.youtube.com/channel/UCD2hr0gq9pV8aDG1mO5JlAg'
+            target='_blank'
+            rel='noopener noreferrer'>
+            <i
+              className='fa fa-youtube-play fa-lg'
+              style={{ padding: '0 10px' }}></i>
+          </a>
+          <a
+            href='https://www.instagram.com/alaska.media/'
+            target='_blank'
+            rel='noopener noreferrer'>
+            <i
+              className='fab fa-instagram fa-lg'
+              style={{ padding: '0 10px' }}></i>
+          </a>
+          <a
+            href='https://twitter.com/MediaAlaska'
+            target='_blank'
+            rel='noopener noreferrer'>
+            <i
+              className='fab fa-twitter fa-lg'
+              style={{ padding: '0 10px' }}></i>
+          </a>
+          <a
+            href='https://www.facebook.com/Alaska-Media-106613784442664'
+            target='_blank'
+            rel='noopener noreferrer'>
+            <i
+              className='fab fa-facebook fa-lg'
+              style={{ padding: '0 10px' }}></i>
+          </a>
+        </div>
+      </div>
     </div>
   );
 

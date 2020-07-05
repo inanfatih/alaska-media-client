@@ -84,14 +84,13 @@ export const styles = (theme) => ({
   },
   socialMediaIcons: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     flexWrap: 'nowrap',
     marginTop: '5%',
   },
   companyNameXs: {
     display: 'flex',
     justifyContent: 'space-evenly',
-
     padding: '10px',
     textAlign: 'center',
     backgroundColor: '#202123',

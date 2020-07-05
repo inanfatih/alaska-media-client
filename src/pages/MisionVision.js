@@ -26,6 +26,66 @@ export default function TwoDThreeD(props) {
   return (
     <div>
       <Grow in timeout={500}>
+        <div className={classes.contactContentBox}>
+          <Paper className={classes.contactContent} elevation={10}>
+            <Card className={classes.contactRoot} elevation={5}>
+              <CardContent style={{ justifyContent: 'center' }}>
+                <Typography
+                  variant='h4'
+                  component='h2'
+                  style={{
+                    margin: '3% 2%',
+                    width: '95%',
+                  }}>
+                  Mission
+                </Typography>
+                <div
+                  style={{
+                    margin: '3% 2%',
+                    width: '95%',
+                    padding: '15px 0 15px 5px',
+                    border: '1px solid #202123',
+                    borderRadius: '5px',
+                  }}>
+                  At Alaska Media, we knead our limitless capability in visual
+                  arts with digital media components in order to boost our
+                  clients’ visibility on social media platforms.
+                </div>
+              </CardContent>
+            </Card>
+            <br />
+            <br />
+            <Card className={classes.contactRoot} elevation={5}>
+              <CardContent style={{ justifyContent: 'center' }}>
+                <Typography
+                  variant='h4'
+                  component='h2'
+                  style={{
+                    margin: '3% 2%',
+                    width: '95%',
+                  }}>
+                  Vision
+                </Typography>
+                <div
+                  style={{
+                    margin: '3% 2%',
+                    width: '95%',
+                    padding: '15px 0 15px 5px',
+                    border: '1px solid #202123',
+                    borderRadius: '5px',
+                  }}>
+                  We are preparing for a smart platform that will allow fully
+                  automated visual content production and headless digital media
+                  marketing.
+                </div>
+              </CardContent>
+            </Card>
+          </Paper>
+        </div>
+      </Grow>
+    </div>
+    /* <div>
+      <Grow in timeout={500}>
         <div className={classes.imageContentBox}>
           <Paper className={classes.imageContent} elevation={10}>
             <Card className={classes.mediaRoot} elevation={5}>
@@ -67,7 +127,7 @@ export default function TwoDThreeD(props) {
           </Paper>
         </div>
       </Grow>
-    </div>
+    </div> */
   );
 }
 
