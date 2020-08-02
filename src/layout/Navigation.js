@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../App.css';
@@ -28,7 +28,7 @@ import StarBorder from '@material-ui/icons/StarBorder';
 import HomeIcon from '@material-ui/icons/Home';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
+import useWindowDimensions from '../util/getWindowDimensions';
 import MissionIcon from '@material-ui/icons/TrackChanges';
 
 const useStyles = makeStyles(styles);
@@ -48,6 +48,14 @@ function Navigation(props) {
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const { width } = useWindowDimensions();
+
+  useEffect(() => {
+    if (width < 600) {
+      setOpen(true);
+    }
+  }, [width]);
 
   const drawer = (
     <div
@@ -135,7 +143,7 @@ function Navigation(props) {
       <Link to='/login'>
         <Button
           style={{
-            width: '100%',
+            width: '250px',
             height: '30px',
             marginTop: '20px',
             position: 'fixed',
