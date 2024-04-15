@@ -30,7 +30,7 @@ import ContentState from './context/content/ContentState';
 import ContactUsMessages from './pages/ContactUsMessages';
 
 axios.defaults.baseURL =
-  'https://us-central1-alaska-media.cloudfunctions.net/api';
+  'https://us-central1-dream-pictures-ca.cloudfunctions.net/api';
 
 const useStyles = makeStyles(styles);
 

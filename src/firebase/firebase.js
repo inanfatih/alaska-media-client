@@ -4,14 +4,14 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyCjG4fqorKT3uxwOknceTlpTE329WCfxkk',
-  authDomain: 'alaska-media.firebaseapp.com',
-  databaseURL: 'https://alaska-media.firebaseio.com',
-  projectId: 'alaska-media',
-  storageBucket: 'alaska-media.appspot.com',
-  messagingSenderId: '528347917892',
-  appId: '1:528347917892:web:a30d674e96a8ac1e3c5611',
-  measurementId: 'G-3S0S7L7K0Z',
+  apiKey: "AIzaSyBD5BQpfgGCcIi2Ko_2OQcZqbDT3DipFWE",
+  authDomain: "dream-pictures-ca.firebaseapp.com",
+  projectId: "dream-pictures-ca",
+  databaseURL: 'https://dream-picture-ca.firebaseio.com',
+  storageBucket: "dream-pictures-ca.appspot.com",
+  messagingSenderId: "102893524611",
+  appId: "1:102893524611:web:6f3b7f33e02f89e490adb6",
+  measurementId: "G-GB7S4EKXGH" 
 };
 
 firebase.initializeApp(firebaseConfig);

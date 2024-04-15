@@ -25,7 +25,7 @@ export default function Admin(props) {
   }
 
   const logout = () => {
-    localStorage.removeItem('AlaskaMediaToken');
+    localStorage.removeItem('DreamPicturesToken');
     delete axios.defaults.headers.common['Authorization'];
   };
 

@@ -47,9 +47,9 @@ export default function TwoDThreeD(props) {
                     border: '1px solid #202123',
                     borderRadius: '5px',
                   }}>
-                  At Alaska Media, we knead our limitless capability in visual
+                  At Dream Pictures, we knead our limitless capability in visual
                   arts with digital media components in order to boost our
-                  clients’ visibility on social media platforms.
+                  clients' visibility on social media platforms.
                 </div>
               </CardContent>
             </Card>
@@ -99,7 +99,7 @@ export default function TwoDThreeD(props) {
                   </Typography>
                   <br />
                   <Typography gutterBottom variant='h5'>
-                    At Alaska Media, we knead our limitless capability in visual
+                    At Dream Pictures, we knead our limitless capability in visual
                     arts with digital media components in order to boost our
                     clients’ visibility on social media platforms.
                   </Typography>

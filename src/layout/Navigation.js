@@ -209,7 +209,7 @@ function Navigation(props) {
             </Link>
             <Link to='/'>
               <Typography className={classes.companyNameXs}>
-                Alaska Media
+                Dream Pictures
               </Typography>
             </Link>
           </Toolbar>
